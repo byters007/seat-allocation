@@ -64,29 +64,6 @@ public class VirtualProgramme
 
 	public void receiveApplication(Candidate c)
 	{
-		/*if(seatsFilled < quota)
-		{
-			seatsFilled++;
-			/*if(c.getNationality() == true)
-			{
-				waitListForeign.add(c);
-			}*/
-			/*if(c.DSStatus() == true)
-			{
-				waitListDS.add(c);
-			}
-			else if(c.getNationality() == false)
-			{
-				waitList.add(c);
-			}
-		}
-		else if(seatsFilled >= quota)
-		{
-			if(quota != 0)
-			{
-				if(wa)
-			}
-		}*/
 		if()				//check if the candidate is present in the merit list, which is available in gale-sharpley class.
 		{
 			tempList.add(c);
@@ -114,7 +91,7 @@ public class VirtualProgramme
 	          num.set(i,temp); 
 	      }           
 	}
-	public ArrayList<Candidate> filter()
+	public AHashmap<String , Candidate> filter(Hashmap<String , Candidate> rejectionList)
 	{
 			SelectionSort(tempList);		
 			if(quota>1)

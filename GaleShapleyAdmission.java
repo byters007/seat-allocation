@@ -1,10 +1,10 @@
-import java.util.*
-import java.io.*
+import java.util.*;
+import java.io.*;
 
 public class GaleShapleyAdmission
 {
-	private Hashset<String,Candidate> candidateList = new Hashset<String,Candidate>;
-	private Hashmap<String , ArrayList<VirtualProgramme> > programMap = new Hashmap<String , ArrayList<VirtualProgramme> >();						//the program map contains the program code as the key and the arrayList of virtual program as its key value
+	private Map<String,Candidate> candidateMap = new Hashmap<String,Candidate>();
+	private Map<String , ArrayList<VirtualProgramme> > programMap = new Hashmap<String , ArrayList<VirtualProgramme> >();						//the program map contains the program code as the key and the arrayList of virtual program as its key value
 	//private ArrayList< ArrayList<VirtualProgramme> > Programs;
 	//private ArrayList<VirtualProgramme> virtualProgrammeList;
 	private MeritList[] meritList = new MeritList[8];
@@ -26,7 +26,7 @@ public class GaleShapleyAdmission
 		inChoices>>tempId>>tempCategory>>tempPDStatus>>tempChoices;
 		if(tempPDStatus == "Y"){booleanTempPDStatus = true;}
 		else {booleanTempPDStatus = false;}
-		candidateList.put(tempId , new Candidate(tempId,tempCategory,booleanTempPDStatus,tempChoices) );
+		candidateMap.put(tempId , new Candidate(tempId,tempCategory,booleanTempPDStatus,tempChoices) );
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -64,77 +64,77 @@ public class GaleShapleyAdmission
 	{
 		inRankList>>tempId>>tempGender>>tempCML>>tempGE>>tempOBC>>tempSC>>tempST>>tempCML_PD>>tempGE_PD>>tempOBC_PD>>tempSC_PD>>tempST_PD;
 																		/** @debug Make sure that proper copy constructors are present to enable copy by value */
-		/*if(candidateList.get(tempId).getCategory.equals("GE") && candidateList.get(tempId).getPDStatus.equals(false))
+		/*if(candidateMap.get(tempId).getCategory.equals("GE") && candidateMap.get(tempId).getPDStatus.equals(false))
 		{
-			meritList[0].add(new Candidate(candidateList.get(tempId)) , int rank);
+			meritList[0].add(new Candidate(candidateMap.get(tempId)) , int rank);
 									/** @debug Make sure a proper constructor with these fewer arguements is present 
-			meritList[1].add(new Candidate(candidateList.get(tempId)) , int rank);
-			meritList[4].add(new Candidate(candidateList.get(tempId)) , int rank);
-			meritList[5].add(new Candidate(candidateList.get(tempId)) , int rank);
+			meritList[1].add(new Candidate(candidateMap.get(tempId)) , int rank);
+			meritList[4].add(new Candidate(candidateMap.get(tempId)) , int rank);
+			meritList[5].add(new Candidate(candidateMap.get(tempId)) , int rank);
 		}
-		if(candidateList.get(tempId).getCategory.equals("OBC") && candidateList.get(tempId).getPDStatus.equals(false))
+		if(candidateMap.get(tempId).getCategory.equals("OBC") && candidateMap.get(tempId).getPDStatus.equals(false))
 		{
-			meritList[1].add(new Candidate(candidateList.get(tempId)) , int rank);
+			meritList[1].add(new Candidate(candidateMap.get(tempId)) , int rank);
 		}
-		if(candidateList.get(tempId).getCategory.equals("SC") && candidateList.get(tempId).getPDStatus.equals(false))
+		if(candidateMap.get(tempId).getCategory.equals("SC") && candidateMap.get(tempId).getPDStatus.equals(false))
 		{
-			meritList[2].add(new Candidate(candidateList.get(tempId)) , int rank);
+			meritList[2].add(new Candidate(candidateMap.get(tempId)) , int rank);
 		}
-		if(candidateList.get(tempId).getCategory.equals("ST") && candidateList.get(tempId).getPDStatus.equals(false))
+		if(candidateMap.get(tempId).getCategory.equals("ST") && candidateMap.get(tempId).getPDStatus.equals(false))
 		{
-			meritList[3].add(new Candidate(candidateList.get(tempId)) , int rank);
+			meritList[3].add(new Candidate(candidateMap.get(tempId)) , int rank);
 		}
-		if(candidateList.get(tempId).getCategory.equals("GE") && candidateList.get(tempId).getPDStatus.equals(true))
+		if(candidateMap.get(tempId).getCategory.equals("GE") && candidateMap.get(tempId).getPDStatus.equals(true))
 		{
-			meritList[0].add(new Candidate(candidateList.get(tempId)) , int rank);
+			meritList[0].add(new Candidate(candidateMap.get(tempId)) , int rank);
 									/** @debug Make sure a proper constructor with these fewer arguements is present 
-			meritList[1].add(new Candidate(candidateList.get(tempId)) , int rank);
-			meritList[4].add(new Candidate(candidateList.get(tempId)) , int rank);
-			meritList[5].add(new Candidate(candidateList.get(tempId)) , int rank);
+			meritList[1].add(new Candidate(candidateMap.get(tempId)) , int rank);
+			meritList[4].add(new Candidate(candidateMap.get(tempId)) , int rank);
+			meritList[5].add(new Candidate(candidateMap.get(tempId)) , int rank);
 		}																
 		*/
 		if(tempGE != 0)
 		{
-			meritList[0].add(new Candidate(candidateList.get(tempId)) , tempGE);
-			meritList[1].add(new Candidate(candidateList.get(tempId)) , tempGE);
-			meritList[4].add(new Candidate(candidateList.get(tempId)) , tempGE);
-			meritList[5].add(new Candidate(candidateList.get(tempId)) , tempGE);
+			meritList[0].add(new Candidate(candidateMap.get(tempId)) , tempGE);
+			meritList[1].add(new Candidate(candidateMap.get(tempId)) , tempGE);
+			meritList[4].add(new Candidate(candidateMap.get(tempId)) , tempGE);
+			meritList[5].add(new Candidate(candidateMap.get(tempId)) , tempGE);
 		}
 		
 		if(tempOBC != 0)
 		{
-			meritList[1].add(new Candidate(candidateList.get(tempId)) , tempOBC);
+			meritList[1].add(new Candidate(candidateMap.get(tempId)) , tempOBC);
 		}
 
 		if(tempSC != 0)
 		{
-			meritList[2].add(new Candidate(candidateList.get(tempId)) , tempSC);
-			meritList[6].add(new Candidate(candidateList.get(tempId)) , tempSC);
+			meritList[2].add(new Candidate(candidateMap.get(tempId)) , tempSC);
+			meritList[6].add(new Candidate(candidateMap.get(tempId)) , tempSC);
 		}							
 
 		if(tempST != 0)
 		{
-			meritList[3].add(new Candidate(candidateList.get(tempId)) , tempST);
-			meritList[7].add(new Candidate(candidateList.get(tempId)) , tempST);
+			meritList[3].add(new Candidate(candidateMap.get(tempId)) , tempST);
+			meritList[7].add(new Candidate(candidateMap.get(tempId)) , tempST);
 		}				
 
 		if(tempGE_PD != 0)
 		{
-			meritList[4].add(new Candidate(candidateList.get(tempId)) , tempGE_PD);
+			meritList[4].add(new Candidate(candidateMap.get(tempId)) , tempGE_PD);
 		}
 
 		if(tempOBC_PD != 0)
 		{
-			meritList[5].add(new Candidate(candidateList.get(tempId)) , tempOBC_PD);
+			meritList[5].add(new Candidate(candidateMap.get(tempId)) , tempOBC_PD);
 		}
 
 		if(tempSC_PD != 0)
 		{
-			meritList[6].add(new Candidate(candidateList.get(tempId)) , tempSC_PD);
+			meritList[6].add(new Candidate(candidateMap.get(tempId)) , tempSC_PD);
 		}
 		if(tempST_PD != 0)
 		{
-			meritList[7].add(new Candidate(candidateList.get(tempId)) , tempST_PD);
+			meritList[7].add(new Candidate(candidateMap.get(tempId)) , tempST_PD);
 		}
 	}
 
@@ -142,6 +142,28 @@ public class GaleShapleyAdmission
 	{
 		meritList[i].sort(i);				/** @debug create function inside the MeritList class to sort it on the basis of the given code */
 	}
-		// Till this step we have created all 8 merit lists and sorted tehm in proper order.
+		// Till this step we have created all 8 merit lists and sorted them in proper order.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/****************************************************Start of the GaleShapley Algorithm***************************************************************/
+	Hashmap<String , Candidate> rejectionList;
+	boolean completed=true;
+	while(!completed)
+	{
+		//boolean completedForEveryCandidate = true;
+		completed = true;
+		for (Map.Entry<String , Candidate> entry : candidateMap.entrySet())
+		{
+			entry.applyForProgram(rejectionList);									/** For each candidate, Call applyForProgram which forces candidate to apply to the next preference in his list.
+			Also pass rejectionList as a Parameter so that if the candidate is rejected, he is added to the list directly. */
+		}
+		/** Till Now , all the candidates have applied to the programs. now the programs will either keep their applicants in the wait list or reject them (and add to the rejection list).*/
+		
+		for (Map.Entry<String , ArrayList<VirtualProgramme> > entry : programMap.entrySet())
+		{
+			
+		}
+
+	}
+
 	
 }
