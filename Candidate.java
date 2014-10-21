@@ -59,9 +59,33 @@ public class Candidate{
 		this.dsStatus=dsStatus;
 		this.nationality=nationality;
 
-		preferenceList = new ArrayList();
+		preferenceList = new ArrayList<VirtualProgramme>();
 		appliedUpto = 0;
 		waitListedFor = NULL;
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//Added loop for adding preferencelist but not sure if it will work as i am using its member function inside its constructor
+		//@anmol: maybe we can do this in galeshapley
+		String[] tempChoice = choices.split("_");
+		for(int i=0;i<tempChoice.length(),i++){
+			//VirtualProgramme tempProg = new VirtualProgramme(tempChoice,pdStatus,/*@anmol: I need qouta over here. You have not read it in GaleShapley currently*/);
+			VirtualProgramme[] tempProg = programMap.get(tempChoice[i]); 
+			this.addPreference(tempProg);
+		}
+		//I think we should read the programme file before student choice file then we can directly get it from programme map
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	}
+
+	//Copy Constructor
+	public Candidate(Candidate x){
+		uniqueID=x.uniqueID;
+		category=x.category;
+		pdStatus=x.pdStatus;
+		dsStatus=x.dsStatus;
+		nationality=x.nationality;
+		preferenceList=x.preferenceList    //I am not sure whether u need preferencelist, appliedupto or waitlistedfor too and whether this will work
+		appliedUpto=x.appliedUpto;
+		waitListedFor=x.waitListedFor;
 	}
 
 	//Function for adding preferences to the preference list
@@ -134,6 +158,8 @@ public class Candidate{
 	public VirtualProgramme nextVirtualProgramme(){
 		appliedUpto++;												/** @note to Pranjal: Maybe you should call the function "setWaitListedFor( preferenceList.get(appliedUpto))"
 																	so that when this function is called from galeShapley class, the current waitListed Programme also gets updated automatically*/
+		//setWaitListedFor(preferenceList.get(appliedUpto));		//@anmol: I think this should be in VirttualProgramme as when applying to the next programme we can get rejected so only the
+																	//programme knows we are waitlisted or rejected.
 		return preferenceList.get(appliedUpto);
 	}
 }
