@@ -145,12 +145,12 @@ public class GaleShapleyAdmission
 		// Till this step we have created all 8 merit lists and sorted them in proper order.
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/****************************************************Start of the GaleShapley Algorithm***************************************************************/
-	Hashmap<String , Candidate> rejectionList;
+	Map<String , Candidate> rejectionList = new Hashmap<String , Candidate>();
 	boolean completed=true;
 	while(!completed)
 	{
 		//boolean completedForEveryCandidate = true;
-		completed = true;
+		//completed = true;
 		for (Map.Entry<String , Candidate> entry : candidateMap.entrySet())
 		{
 			entry.applyForProgram(rejectionList);									/** For each candidate, Call applyForProgram which forces candidate to apply to the next preference in his list.
@@ -160,10 +160,30 @@ public class GaleShapleyAdmission
 		
 		for (Map.Entry<String , ArrayList<VirtualProgramme> > entry : programMap.entrySet())
 		{
-			
+			for (ListIterator<VirtualProgramme> it = entry.listIterator(); it.hasNext(); )	/**listIterator with no arguements points to the beginning of the list*/
+			 {
+  			 
+  			  it.filter(rejectionList);						/** Make sure that you add rejectionList parameter in the filter function for VirtualProgrammes */
+			}
+//			entry.filter(rejectionList);		
 		}
-
+					/** @doubt Can java variables be redefined? as "entry" variable here */
+		for(Map.Entry<String , Candidate> entry : rejectionList.entrySet())
+		{
+				entry.nextVirtualProgramme();		/** For all the candidates in the rejection list, call "nextVirtualProgramme()" which crosses of their
+														 present choice and makes them apply to the next choice in their list in the next iteration*/
+		}
+		if(rejectionList.size() == 0){completed =true;}		/** If no one is rejected in this iteration, rejectionList will be empty and the iteration can be terminated*/
+															/** Iterations are terminated when , for all candidates:
+																1). When he reaches the end of his preference list and can not apply to any more programmes
+																2). When he is in Waitlist for some Program.
+															When all the candidates satisfy one of the above two, the algoritihm can be safely terminated.
+															Note that when a candidate reaches the end of his Preference list, he no longer applies to any Programme. 
+															Thus he can not be added to rejectionList at all.(To be added in rejectionList, one needs to apply to some Programme in the first place.)
+															Thus the algorithm is to be terminated iff the rejectionList is true.*/
+		rejectionList.removeAll();				/**Clear the rejectionList before the next Iteration*/
 	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	
 }

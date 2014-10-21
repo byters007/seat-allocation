@@ -13,8 +13,7 @@ public class Candidate{
 	//Information regarding preferences
 	private ArrayList<VirtualProgramme> preferenceList;
 	private int appliedUpto;
-	private VirtualProgramme waitListedFor;
-
+	private VirtualProgramme waitListedFor; 
 	//Functions to manipulate data members
 	public String getUniqueID(){
 		return uniqueID;
@@ -133,7 +132,8 @@ public class Candidate{
 
 	//Function for finding the next Virtual Programme
 	public VirtualProgramme nextVirtualProgramme(){
-		appliedUpto++;
+		appliedUpto++;												/** @note to Pranjal: Maybe you should call the function "setWaitListedFor( preferenceList.get(appliedUpto))"
+																	so that when this function is called from galeShapley class, the current waitListed Programme also gets updated automatically*/
 		return preferenceList.get(appliedUpto);
 	}
 }
