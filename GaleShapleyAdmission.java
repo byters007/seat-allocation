@@ -40,7 +40,7 @@ public class GaleShapleyAdmission
 	while()
 	{
 		inProgrammes>>garbage>>programCode>>programName>>ge>>obc>>sc>>st>>ge_pd>>obc_pd>>sc_pd>>st_pd;
-		programMap.put(programCode , new ArrayList<VirtualProgramme>;
+		programMap.put(programCode , new ArrayList<VirtualProgramme>());
 		programMap.get(programCode).add(new VirtualProgramme("GE",false,ge));
 		programMap.get(programCode).add(new VirtualProgramme("OBC",false,obc));
 		programMap.get(programCode).add(new VirtualProgramme("SC",false,sc));
@@ -147,7 +147,7 @@ public class GaleShapleyAdmission
 	/****************************************************Start of the GaleShapley Algorithm***************************************************************/
 	Map<String , Candidate> rejectionList = new Hashmap<String , Candidate>();
 	boolean completed=true;
-	while(!completed)
+	while(completed == false)
 	{
 		//boolean completedForEveryCandidate = true;
 		//completed = true;
@@ -173,17 +173,24 @@ public class GaleShapleyAdmission
 				entry.nextVirtualProgramme();		/** For all the candidates in the rejection list, call "nextVirtualProgramme()" which crosses of their
 														 present choice and makes them apply to the next choice in their list in the next iteration*/
 		}
-		if(rejectionList.size() == 0){completed =true;}		/** If no one is rejected in this iteration, rejectionList will be empty and the iteration can be terminated*/
+		if(rejectionList.size().equals(0){completed = true;}		/** If no one is rejected in this iteration, rejectionList will be empty and the iteration can be terminated*/
 															/** Iterations are terminated when , for all candidates:
 																1). When he reaches the end of his preference list and can not apply to any more programmes
 																2). When he is in Waitlist for some Program.
 															When all the candidates satisfy one of the above two, the algoritihm can be safely terminated.
 															Note that when a candidate reaches the end of his Preference list, he no longer applies to any Programme. 
 															Thus he can not be added to rejectionList at all.(To be added in rejectionList, one needs to apply to some Programme in the first place.)
-															Thus the algorithm is to be terminated iff the rejectionList is true.*/
-		rejectionList.removeAll();				/**Clear the rejectionList before the next Iteration*/
+															Thus the algorithm is to be terminated iff the rejectionList is empty.*/
+		rejectionList.clear<String,Candidate>();
+						/**Clear the rejectionList before the next Iteration*/
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/******************************************************Now to output the final Seat allocation*******************************************************************/
+	for (Map.Entry<String , Candidate> entry : candidateMap.entrySet())
+		{
+			System.print.out(entry.getId() , entry.getWaitListedFor(), newline); /** @debug : Proper Syntax*/
+		}
+
 
 	
 }
