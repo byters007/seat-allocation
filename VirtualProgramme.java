@@ -94,13 +94,15 @@ public class VirtualProgramme
 	public AHashmap<String , Candidate> filter(Hashmap<String , Candidate> rejectionList)
 	{
 			SelectionSort(tempList);		
-			if(quota>1)
+			if(quota>0)
 			{
 				waitList.addAll(tempList.subList(0, quota));
 				tempList.removeRange(0, quota);
-				while( tempList.size()!=0  && waitList.get(waitList.size()-1).getRank() == tempList.get(0).getRank())
+				while( tempList.size()!=0  && ((waitList.get(waitList.size()-1)).getRank()).equals((tempList.get(0)).getRank())) /**While the candidate at the end of the waitList has same rank as the 
+																																candidate on top of the the remaining list, Add the candidate from the the tempList to the waitList.
+																																This is done so as to ensure that the candidates of same rank are all selected, even if it exceeds the quota*/
 				{
-					waitList.add(tempList.get(0));
+					waitList.add(new Candidate(tempList.get(0));	/** Does tempList.get(0) returns value or reference?*/
 					tempList.remove(0);
 				}
 			}
