@@ -62,7 +62,8 @@ public class VirtualProgramme
 		waitListForeign = new ArrayList<Candidate>();
 	}
 
-	public void receiveApplication(Candidate c)
+	/** @debug: maybe you can pass tempId(string) ,instead of Candidate*/
+	public void receiveApplication(Candidate c, Map<String , Candidate> rejectionList)	
 	{
 		if()				//check if the candidate is present in the merit list, which is available in gale-sharpley class.
 		{
@@ -91,7 +92,7 @@ public class VirtualProgramme
 	          num.set(i,temp); 
 	      }           
 	}
-	public AHashmap<String , Candidate> filter(Hashmap<String , Candidate> rejectionList)
+	public Hashmap<String , Candidate> filter(Hashmap<String , Candidate> rejectionList)
 	{
 			SelectionSort(tempList);		
 			if(quota>0)

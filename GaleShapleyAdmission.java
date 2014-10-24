@@ -19,68 +19,7 @@ public class GaleShapleyAdmission
 	
 	void startAlgorithm()
 	{
-
-		
-		/** To read in all available programs, create their respective virtual programmes*/
-		String programCode;
-		String programName;
-		int ge,obc,sc,st,ge_pd,obc_pd,sc_pd,st_pd;
-		//ArrayList<VirtualProgramme> tempVirtualProgrammeList;
-		 Scanner sb = new Scanner(new File("programs.csv")).useDelimiter(",");
-		//fstream inProgrammes("programs.csv" , ios::in);	/** create proper file stream object */
-		//inProgrammes>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage;
-		garbage = sb.next();garbage = sb.next();garbage = sb.next();garbage = sb.next();garbage = sb.next();garbage = sb.next();
-		garbage = sb.next();garbage = sb.next();garbage = sb.next();garbage = sb.next();garbage = sb.next();
-		while(sb.hasNext())
-		{
-	  	//	inProgrammes>>garbage>>programCode>>programName>>ge>>obc>>sc>>st>>ge_pd>>obc_pd>>sc_pd>>st_pd;
-	  		garbage = sb.next();
-	  		programCode = sb.next();
-	  		programName = sb.next();
-	  		ge = sb.nextInt();
-	  		obc = sb.nextInt();
-	  		sc = sb.nextInt();
-	  		st = sb.nextInt();
-	  		ge_pd = sb.nextInt();
-	  		obc_pd = sb.nextInt();
-	  		sc_pd = sb.nextInt();
-	  		st_pd = sb.nextInt();
-			programMap.put(programCode , new ArrayList<VirtualProgramme>());
-			programMap.get(programCode).add(new VirtualProgramme("GE",false,ge));
-			programMap.get(programCode).add(new VirtualProgramme("OBC",false,obc));
-			programMap.get(programCode).add(new VirtualProgramme("SC",false,sc));
-			programMap.get(programCode).add(new VirtualProgramme("ST",false,st));
-			programMap.get(programCode).add(new VirtualProgramme("GE_PD",true,ge_pd));
-			programMap.get(programCode).add(new VirtualProgramme("OBC_PD",true,obc_pd));
-			programMap.get(programCode).add(new VirtualProgramme("SC_PD",true,sc_pd));
-			programMap.get(programCode).add(new VirtualProgramme("ST_PD",true,st_pd));
-			//programMap.put(programCode);
-
-		}
-		sb.close();
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/** To Read in the candidate list and their choices */
-		 Scanner s = new Scanner(new File("choices.csv")).useDelimiter(",");
-		//fstream inChoices("choices.csv" , ios::in); /** create proper file stream object */
-		//inChoices>>garbage>>garbage>>garbage>>garbage;	/** reading in the first line which contains the field names */
-		 garbage = s.next();garbage = s.next();garbage = s.next();garbage = s.next();
-		while(s.hasNext())				/** Write the correct syntax for reading in from the files */
-		{
-			//inChoices>>tempId>>tempCategory>>tempPDStatus>>tempChoices;
-			tempId = s.next();
-			tempCategory = s.next();
-			tempPDStatus = s.next();
-			tempChoices = s.next();
-			if(tempPDStatus == "Y"){booleanTempPDStatus = true;}
-			else {booleanTempPDStatus = false;}
-			candidateMap.put(tempId , new Candidate(tempId,tempCategory,booleanTempPDStatus,false,true,tempChoices) );
-		}
-		s.close();
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		/** To read in the rank list of candidates and create the merit lists of different categories */
+/** To read in the rank list of candidates and create the merit lists of different categories */
 		Scanner sd = new Scanner(new File("ranklist.csv")).useDelimiter(",");
 		//fstream inRankList("ranklist.csv" , ios::in);
 		String tempId;
@@ -190,6 +129,68 @@ public class GaleShapleyAdmission
 		}
 		sd.close();
 			// Till this step we have created all 8 merit lists and sorted them in proper order.
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		/** To read in all available programs, create their respective virtual programmes*/
+		String programCode;
+		String programName;
+		int ge,obc,sc,st,ge_pd,obc_pd,sc_pd,st_pd;
+		//ArrayList<VirtualProgramme> tempVirtualProgrammeList;
+		 Scanner sb = new Scanner(new File("programs.csv")).useDelimiter(",");
+		//fstream inProgrammes("programs.csv" , ios::in);	/** create proper file stream object */
+		//inProgrammes>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage;
+		garbage = sb.next();garbage = sb.next();garbage = sb.next();garbage = sb.next();garbage = sb.next();garbage = sb.next();
+		garbage = sb.next();garbage = sb.next();garbage = sb.next();garbage = sb.next();garbage = sb.next();
+		while(sb.hasNext())
+		{
+	  	//	inProgrammes>>garbage>>programCode>>programName>>ge>>obc>>sc>>st>>ge_pd>>obc_pd>>sc_pd>>st_pd;
+	  		garbage = sb.next();
+	  		programCode = sb.next();
+	  		programName = sb.next();
+	  		ge = sb.nextInt();
+	  		obc = sb.nextInt();
+	  		sc = sb.nextInt();
+	  		st = sb.nextInt();
+	  		ge_pd = sb.nextInt();
+	  		obc_pd = sb.nextInt();
+	  		sc_pd = sb.nextInt();
+	  		st_pd = sb.nextInt();
+			programMap.put(programCode , new ArrayList<VirtualProgramme>());
+			programMap.get(programCode).add(new VirtualProgramme("GE",false,ge));
+			programMap.get(programCode).add(new VirtualProgramme("OBC",false,obc));
+			programMap.get(programCode).add(new VirtualProgramme("SC",false,sc));
+			programMap.get(programCode).add(new VirtualProgramme("ST",false,st));
+			programMap.get(programCode).add(new VirtualProgramme("GE_PD",true,ge_pd));
+			programMap.get(programCode).add(new VirtualProgramme("OBC_PD",true,obc_pd));
+			programMap.get(programCode).add(new VirtualProgramme("SC_PD",true,sc_pd));
+			programMap.get(programCode).add(new VirtualProgramme("ST_PD",true,st_pd));
+			//programMap.put(programCode);
+
+		}
+		sb.close();
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/** To Read in the candidate list and their choices */
+		 Scanner s = new Scanner(new File("choices.csv")).useDelimiter(",");
+		//fstream inChoices("choices.csv" , ios::in); /** create proper file stream object */
+		//inChoices>>garbage>>garbage>>garbage>>garbage;	/** reading in the first line which contains the field names */
+		 garbage = s.next();garbage = s.next();garbage = s.next();garbage = s.next();
+		while(s.hasNext())				/** Write the correct syntax for reading in from the files */
+		{
+			//inChoices>>tempId>>tempCategory>>tempPDStatus>>tempChoices;
+			tempId = s.next();
+			tempCategory = s.next();
+			tempPDStatus = s.next();
+			tempChoices = s.next();
+			if(tempPDStatus == "Y"){booleanTempPDStatus = true;}
+			else {booleanTempPDStatus = false;}
+			candidateMap.put(tempId , new Candidate(tempId,tempCategory,booleanTempPDStatus,false,true,tempChoices) );
+		}
+		s.close();
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/****************************************************Start of the GaleShapley Algorithm***************************************************************/
 		Map<String , Candidate> rejectionList = new HashMap<String , Candidate>();
@@ -200,8 +201,10 @@ public class GaleShapleyAdmission
 			//completed = true;
 			for (Map.Entry<String , Candidate> entry : candidateMap.entrySet())
 			{
-				entry.applyForProgram(rejectionList);									/** For each candidate, Call applyForProgram which forces candidate to apply to the next preference in his list.
-				Also pass rejectionList as a Parameter so that if the candidate is rejected, he is added to the list directly. */
+				if(entry.getAppliedUpto().equals())
+				entry.currentVirtualProgramme().receiveApplication(entry.getUniqueID() ,rejectionList);
+				//entry.applyForProgram(rejectionList);									/** For each candidate, Call receiveApplication on the nextVirtualProgramme which forces candidate to apply to the next preference in his list.*/
+			/*	Also pass rejectionList as a Parameter so that if the candidate is rejected, he is added to the list directly. */
 			}
 			/** Till Now , all the candidates have applied to the programs. now the programs will either keep their applicants in the wait list or reject them (and add to the rejection list).*/
 			
