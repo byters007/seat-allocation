@@ -4,7 +4,7 @@ import java.util.*;
 public class MeritList{
 	
 	//data members
-	private Map<Candidate, Integer> rankList = new HashMap<Candidate, Integer>();
+	private Map<String, Integer> rankList = new HashMap<String, Integer>();
 
 	//constructor
 	/*public MeritList(){
@@ -12,15 +12,46 @@ public class MeritList{
 	}*/
 
 	//Function for adding candidate
-	public void addCandidate(Candidate newCandidate, Integer rank){
-		rankList.put(newCandidate,rank);
+	public void addCandidate(String newID, Integer rank){
+		rankList.put(newID,rank);
 	}
 
 	//Function for comparing ranks
-	public Integer compareRank(Candidate p1, Candidate p2){
-		if(rankList.get(p1)<rankList.get(p2)) return 0;
-		else if(rankList.get(p1)=rankList.get(p2)) return 2
-		else return 1;
+	public Integer compareRank(String p1, String p2, Integer case_){
+		if(case_==0 || case_==2 || case_==3){
+
+			if(rankList.get(p1)<rankList.get(p2)) return 0;
+			else if(rankList.get(p1)==rankList.get(p2)) return 2;
+			else return 1;
+		}
+		if(case_==1 || case_==4 || case_==5){
+			if(candidateMap.get(p1).category=="GE" && candidateMap.get(p2).category!="GE"){
+				return 1;
+			}
+			else if(candidateMap.get(p1).category!="GE" && candidateMap.get(p2).category=="GE"){
+				return 0;
+			}
+			else{
+
+				if(rankList.get(p1)<rankList.get(p2)) return 0;
+				else if(rankList.get(p1)==rankList.get(p2)) return 2;
+				else return 1;
+			}
+		}
+		if(case_==6 || case_==7){
+			if(candidateMap.get(p1).pdStatus==True && candidateMap.get(p2).category==False){
+				return 0;
+			}
+			else if(candidateMap.get(p1).category==False && candidateMap.get(p2).category==True){
+				return 1;
+			}
+			else{
+
+				if(rankList.get(p1)<rankList.get(p2)) return 0;
+				else if(rankList.get(p1)==rankList.get(p2)) return 2;
+				else return 1;
+			}	
+		}
 	}
 	/**Add the sort function here. Use comparator. For example for meritList[1]{OBC and non-PD}, first comparision:on category. 
 	oBC student should be higher up. Second comparision(which will be done when first compariosion gives equals(that is if both 
