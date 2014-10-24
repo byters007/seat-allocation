@@ -16,6 +16,14 @@ public class MeritList{
 		rankList.put(newID,rank);
 	}
 
+	//Function for getting rank
+	public int getRank(String candidateID){
+		if(rankList.containsKey(candidateID)==False){
+			return -1;
+		}
+		return rankList.get(candidateID);
+	}
+
 	//Function for comparing ranks
 	public Integer compareRank(String p1, String p2, Integer case_){
 		if(case_==0 || case_==2 || case_==3){

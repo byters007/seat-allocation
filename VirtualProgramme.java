@@ -7,12 +7,13 @@ public class VirtualProgramme
 	private Integer quota;
 	private Integer meritListIndex;
 	private Integer seatsFilled = new Integer(0);
-	private ArrayList<Candidate> waitList;
-	private ArrayList<Candidate> waitListForeign;
-	private ArrayList<Candidate> waitListDS;
-	private ArrayList<Candidate> tempList;
+	private ArrayList<String> waitList;
+	private ArrayList<String> waitListForeign;
+	private ArrayList<String> waitListDS;
+	private ArrayList<String> tempList;
+	private MeritList meritList;
 
-	public VirtualProgramme(String category_ , Boolean pdStatus_ , Integer quota_)
+	public VirtualProgramme(String category_ , Boolean pdStatus_ , Integer quota_, MeritList[] recievedList)
 	{
 		category = category_;
 		pdStatus = pdStatus_;
@@ -60,22 +61,24 @@ public class VirtualProgramme
 		waitList = new ArrayList<Candidate>();
 		waitListDS = new ArrayList<Candidate>();
 		waitListForeign = new ArrayList<Candidate>();
+
+		meritList = recievedList[meritListIndex];
 	}
 
 	/** @debug: maybe you can pass tempId(string) ,instead of Candidate*/
-	public void receiveApplication(Candidate c, Map<String , Candidate> rejectionList)	
+	public void receiveApplication(String candidateID, Map<String , Candidate> rejectionList)	
 	{
-		if()				//check if the candidate is present in the merit list, which is available in gale-sharpley class.
+		if(meritList.getRank(candidateID)!=-1)				//check if the candidate is present in the merit list, which is available in gale-sharpley class.
 		{
-			tempList.add(c);
+			tempList.add(candidateID);
 		}
 		else
 		{
-			rejectionList.add(c);	//otherwise add the candidate to the rejection list for that iteration of the gale sharpley algorithm.
+			rejectionList.add(candidateID);	//otherwise add the candidate to the rejection list for that iteration of the gale sharpley algorithm.
 		}
 
 	}
-
+	//We can implement treeMap too
 	public static void SelectionSort ( ArrayList<Candidate> num)
 	{
 	     int i, j, first, temp;  
