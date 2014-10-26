@@ -2,6 +2,7 @@ import java.util.*;
 
 public class VirtualProgramme  
 {
+	private String programID;
 	private String category;	
 	private Boolean pdStatus;
 	private Integer quota;
@@ -13,10 +14,11 @@ public class VirtualProgramme
 	private ArrayList<Candidate> tempList;
 	private MeritList meritList;
 
-	public VirtualProgramme(String category_ , Boolean pdStatus_ , Integer quota_, MeritList[] recievedList)
+	public VirtualProgramme(String category_ , Boolean pdStatus_ , Integer quota_, MeritList[] recievedList, String programID_)
 	{
 		category = category_;
 		pdStatus = pdStatus_;
+		programID = programID_;
 		if(pdStatus == false)
 		{
 			if(category == "GE")
@@ -65,8 +67,12 @@ public class VirtualProgramme
 		meritList = recievedList[meritListIndex];
 	}
 
+	public String getProgramID(){
+		return programID;
+	}
+
 	/** @debug: maybe you can pass tempId(string) ,instead of Candidate*/
-	public void receiveApplication(Candidate newCandidate, Map<String , Candidate> rejectionList)	
+	public void receiveApplication(Candidate newCandidate, HashMap<String , Candidate> rejectionList)	
 	{
 		if(meritList.getRank(newCandidate.getUniqueID())!=-1)				//check if the candidate is present in the merit list, which is available in gale-sharpley class.
 		{

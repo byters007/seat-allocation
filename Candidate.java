@@ -76,67 +76,67 @@ public class Candidate{
 	}
 
 	//Function for adding preferences to the preference list
-	public void addPreference(VirtualProgramme[] choice){
+	public void addPreference(ArrayList<VirtualProgramme> choice){
 		switch(category){
 
 			case "GE": if(!pdStatus){
-				preferenceList.add(choice[0]);
-				preferenceList.add(choice[1]);
-				preferenceList.add(choice[4]);
-				preferenceList.add(choice[5]);
+				preferenceList.add(choice.get(0));
+				preferenceList.add(choice.get(1));
+				preferenceList.add(choice.get(4));
+				preferenceList.add(choice.get(5));
 			}
 			else{
-				preferenceList.add(choice[0]);
-				preferenceList.add(choice[4]);
-				preferenceList.add(choice[1]);
-				preferenceList.add(choice[5]);
+				preferenceList.add(choice.get(0));
+				preferenceList.add(choice.get(4));
+				preferenceList.add(choice.get(1));
+				preferenceList.add(choice.get(5));
 			}break;
 
 			case "OBC": if(!pdStatus){
-				preferenceList.add(choice[0]);
-				preferenceList.add(choice[1]);
-				preferenceList.add(choice[4]);
-				preferenceList.add(choice[5]);
+				preferenceList.add(choice.get(0));
+				preferenceList.add(choice.get(1));
+				preferenceList.add(choice.get(4));
+				preferenceList.add(choice.get(5));
 			}
 			else{
-				preferenceList.add(choice[0]);
-				preferenceList.add(choice[4]);
-				preferenceList.add(choice[1]);
-				preferenceList.add(choice[5]);
+				preferenceList.add(choice.get(0));
+				preferenceList.add(choice.get(4));
+				preferenceList.add(choice.get(1));
+				preferenceList.add(choice.get(5));
 			}break;
 
 			case "SC": if(!pdStatus){
-				preferenceList.add(choice[0]);
-				preferenceList.add(choice[2]);
-				preferenceList.add(choice[1]);
-				preferenceList.add(choice[4]);
-				preferenceList.add(choice[5]);
-				preferenceList.add(choice[6]);
+				preferenceList.add(choice.get(0));
+				preferenceList.add(choice.get(2));
+				preferenceList.add(choice.get(1));
+				preferenceList.add(choice.get(4));
+				preferenceList.add(choice.get(5));
+				preferenceList.add(choice.get(6));
 			}
 			else{
-				preferenceList.add(choice[0]);
-				preferenceList.add(choice[2]);
-				preferenceList.add(choice[4]);
-				preferenceList.add(choice[6]);
-				preferenceList.add(choice[1]);
-				preferenceList.add(choice[5]);
+				preferenceList.add(choice.get(0));
+				preferenceList.add(choice.get(2));
+				preferenceList.add(choice.get(4));
+				preferenceList.add(choice.get(6));
+				preferenceList.add(choice.get(1));
+				preferenceList.add(choice.get(5));
 			}break;
 
 			case "ST": if(!pdStatus){
-				preferenceList.add(choice[0]);
-				preferenceList.add(choice[3]);
-				preferenceList.add(choice[1]);
-				preferenceList.add(choice[4]);
-				preferenceList.add(choice[5]);
-				preferenceList.add(choice[7]);
+				preferenceList.add(choice.get(0));
+				preferenceList.add(choice.get(3));
+				preferenceList.add(choice.get(1));
+				preferenceList.add(choice.get(4));
+				preferenceList.add(choice.get(5));
+				preferenceList.add(choice.get(7));
 			}
 			else{
-				preferenceList.add(choice[0]);
-				preferenceList.add(choice[3]);
-				preferenceList.add(choice[4]);
-				preferenceList.add(choice[7]);
-				preferenceList.add(choice[1]);
-				preferenceList.add(choice[5]);
+				preferenceList.add(choice.get(0));
+				preferenceList.add(choice.get(3));
+				preferenceList.add(choice.get(4));
+				preferenceList.add(choice.get(7));
+				preferenceList.add(choice.get(1));
+				preferenceList.add(choice.get(5));
 			}break;
 		}
 	}
