@@ -79,18 +79,19 @@ public class VirtualProgramme
 
 	}
 	//We can implement treeMap took
-	public static void SelectionSort ( ArrayList<Candidate> num)
+	public void SelectionSort ( ArrayList<Candidate> num)
 	{
-	     int i, j, first, temp;  
+	     int i, j, first;
+	     Candidate temp;  
 	     for ( i = num.size() - 1; i > 0; i--)  
 	     {
 	          first = 0;   //initialize to subscript of first element
 	          for(j = 1; j <= i; j++)   //locate smallest element between positions 1 and i.
 	          {
-	               if( hashmap.get(num.get(j)).rank< hashmap.get(num.get(first)).rank )         	//here write the actual name of the hashmap, rank is the 
+	               if( meritList.compareRank(num.get(j), num.get(first),meritListIndex)==0 )         	//here write the actual name of the hashmap, rank is the 
 	                 first = j;
 	          }
-	          temp = num.get(first);   //swap smallest found with element in position i.
+	          temp = new Candidate(num.get(first));   //swap smallest found with element in position i.
 	          num.set(first,num.get(i));
 	          num.set(i,temp); 
 	      }           
@@ -101,8 +102,8 @@ public class VirtualProgramme
 			if(quota>0)
 			{
 				waitList.addAll(tempList.subList(0, quota));
-				tempList.removeRange(0, quota);
-				while( tempList.size()!=0  && ((waitList.get(waitList.size()-1)).getRank()).equals((tempList.get(0)).getRank())) /**While the candidate at the end of the waitList has same rank as the 
+				tempList.subList(0, quota).clear();
+				while( tempList.size()!=0  && (meritList.compareRank(waitList.get(waitList.size()-1), tempList.get(0), meritListIndex)==2)) /**While the candidate at the end of the waitList has same rank as the 
 																																candidate on top of the the remaining list, Add the candidate from the the tempList to the waitList.
 																																This is done so as to ensure that the candidates of same rank are all selected, even if it exceeds the quota*/
 				{
@@ -111,7 +112,9 @@ public class VirtualProgramme
 				}
 			}
 
-			rejectionList.addAll(tempList);
+			for(int i=0; i<tempList.size(); i++){
+				rejectionList.put(tempList.get(i).getUniqueID(), tempList.get(i));
+			}
 			return rejectionList;
 	}
 
