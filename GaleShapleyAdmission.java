@@ -18,7 +18,9 @@ public class GaleShapleyAdmission
 	boolean booleanTempPDStatus;
 
 	public GaleShapleyAdmission(){
-
+		for(int i=0;i<8;i++){
+			meritList[i] = new MeritList();
+		}
 	}
 	
 	public Candidate getCandidate(String uniqueID){
@@ -33,7 +35,9 @@ public class GaleShapleyAdmission
 	{
 
 /** To read in the rank list of candidates and create the merit lists of different categories */
-		Scanner sd = new Scanner(new File("ranklist.csv")).useDelimiter(",");
+		try{
+			Scanner sd = new Scanner(new File("ranklist.csv")).useDelimiter(",|\n");
+		
 		//fstream inRankList("ranklist.csv" , ios::in);
 		String tempId;
 		int tempGender,tempCML,tempGE,tempOBC,tempSC,tempST,tempCML_PD,tempGE_PD,tempOBC_PD,tempSC_PD,tempST_PD;
@@ -142,6 +146,9 @@ public class GaleShapleyAdmission
 		//}
 		
 		sd.close();
+		} catch(FileNotFoundException e){
+			System.exit(1);
+		}
 			// Till this step we have created all 8 merit lists and sorted them in proper order.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
@@ -151,7 +158,8 @@ public class GaleShapleyAdmission
 		String programName;
 		int ge,obc,sc,st,ge_pd,obc_pd,sc_pd,st_pd;
 		//ArrayList<VirtualProgramme> tempVirtualProgrammeList;
-		 Scanner sb = new Scanner(new File("programs.csv")).useDelimiter(",");
+		try{
+		 Scanner sb = new Scanner(new File("programs.csv")).useDelimiter(",|\n");
 		//fstream inProgrammes("programs.csv" , ios::in);	/** create proper file stream object */
 		//inProgrammes>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage>>garbage;
 		garbage = sb.next();garbage = sb.next();garbage = sb.next();garbage = sb.next();garbage = sb.next();garbage = sb.next();
@@ -183,11 +191,15 @@ public class GaleShapleyAdmission
 
 		}
 		sb.close();
+		} catch(FileNotFoundException e){
+			System.exit(1);
+		}
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/** To Read in the candidate list and their choices */
-		 Scanner s = new Scanner(new File("choices.csv")).useDelimiter(",");
+		try{
+		 Scanner s = new Scanner(new File("choices.csv")).useDelimiter(",|\n");
 		//fstream inChoices("choices.csv" , ios::in); /** create proper file stream object */
 		//inChoices>>garbage>>garbage>>garbage>>garbage;	/** reading in the first line which contains the field names */
 		 garbage = s.next();garbage = s.next();garbage = s.next();garbage = s.next();
@@ -205,7 +217,7 @@ public class GaleShapleyAdmission
 			//Added loop for adding preferencelist but not sure if it will work as i am using its member function inside its constructor
 			//@anmol: maybe we can do this in galeshapley
 			String[] choices = tempChoices.split("_");
-			for(int i=0;i<tempChoices.length();i++){
+			for(int i=0;i<choices.length;i++){
 				//VirtualProgramme tempProg = new VirtualProgramme(tempChoice,pdStatus,/*@anmol: I need qouta over here. You have not read it in GaleShapley currently*/);
 				ArrayList<VirtualProgramme> tempProg = programMap.get(choices[i]); 
 				tempCandidate.addPreference(tempProg);
@@ -215,6 +227,9 @@ public class GaleShapleyAdmission
 			candidateMap.put(tempId, tempCandidate);
 		}
 		s.close();
+		} catch(FileNotFoundException e){
+			System.exit(1);
+		}
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

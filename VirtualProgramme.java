@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 public class VirtualProgramme  
 {
@@ -40,19 +41,19 @@ public class VirtualProgramme
 		}
 		else
 		{
-			if(category == "GE")
+			if(category == "GE_PD")
 			{
 				meritListIndex = 4;
 			}
-			if(category == "OBC")
+			if(category == "OBC_PD")
 			{
 				meritListIndex = 5;
 			}
-			if(category == "SC")
+			if(category == "SC_PD")
 			{
 				meritListIndex = 6;
 			}
-			if(category == "ST")
+			if(category == "ST_PD")
 			{
 				meritListIndex = 7;
 			}
@@ -64,6 +65,7 @@ public class VirtualProgramme
 		waitListDS = new ArrayList<Candidate>();
 		waitListForeign = new ArrayList<Candidate>();
 
+		//meritList = new MeritList(recievedList[meritListIndex]);
 		meritList = recievedList[meritListIndex];
 	}
 

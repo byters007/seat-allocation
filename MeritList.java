@@ -4,12 +4,17 @@ import java.util.*;
 public class MeritList{
 	
 	//data members
-	private Map<String, Integer> rankList = new HashMap<String, Integer>();
+	private HashMap<String, Integer> rankList;
 
 	//constructor
-	/*public MeritList(){
-		rankList = new HashMap();
-	}*/
+	public MeritList(){
+		rankList = new HashMap<String, Integer>();
+	}
+
+	//copy constructor
+	public MeritList(MeritList temp){
+		rankList = new HashMap<String, Integer>(temp.rankList);
+	}
 
 	//Function for adding candidate
 	public void addCandidate(String newID, Integer rank){

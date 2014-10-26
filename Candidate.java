@@ -148,7 +148,7 @@ public class Candidate{
 	public void nextVirtualProgramme(){
 		appliedUpto++;												/** @note to Pranjal: Maybe you should call the function "setWaitListedFor( preferenceList.get(appliedUpto))"
 													so that when this function is called from galeShapley class, the current waitListed Programme also gets updated automatically*/
-		//setWaitListedFor(preferenceList.get(appliedUpto));		//@anmol: I think this should be in VirttualProgramme as when applying to the next programme we can get rejected so only the
+		setWaitListedFor(preferenceList.get(appliedUpto));		//@anmol: I think this should be in VirttualProgramme as when applying to the next programme we can get rejected so only the
 																	//programme knows we are waitlisted or rejected
 		if(appliedUpto==preferenceList.size()){
 			appliedUpto=-1;
