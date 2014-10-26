@@ -18,48 +18,49 @@ public class MeritList{
 
 	//Function for getting rank
 	public int getRank(String candidateID){
-		if(rankList.containsKey(candidateID)==False){
+		if(rankList.containsKey(candidateID)==false){
 			return -1;
 		}
 		return rankList.get(candidateID);
 	}
 
 	//Function for comparing ranks
-	public Integer compareRank(String p1, String p2, Integer case_){
+	public Integer compareRank(Candidate p1, Candidate p2, Integer case_){
 		if(case_==0 || case_==2 || case_==3){
 
-			if(rankList.get(p1)<rankList.get(p2)) return 0;
-			else if(rankList.get(p1)==rankList.get(p2)) return 2;
+			if(rankList.get(p1.getUniqueID())<rankList.get(p2.getUniqueID())) return 0;
+			else if(rankList.get(p1.getUniqueID())==rankList.get(p2.getUniqueID())) return 2;
 			else return 1;
 		}
-		if(case_==1 || case_==4 || case_==5){
-			if(candidateMap.get(p1).category=="GE" && candidateMap.get(p2).category!="GE"){
+		else if(case_==1 || case_==4 || case_==5){
+			if(p1.getCategory()=="GE" && p2.getCategory()!="GE"){
 				return 1;
 			}
-			else if(candidateMap.get(p1).category!="GE" && candidateMap.get(p2).category=="GE"){
+			else if(p1.getCategory()!="GE" && p2.getCategory()=="GE"){
 				return 0;
 			}
 			else{
 
-				if(rankList.get(p1)<rankList.get(p2)) return 0;
-				else if(rankList.get(p1)==rankList.get(p2)) return 2;
+				if(rankList.get(p1.getUniqueID())<rankList.get(p2.getUniqueID())) return 0;
+				else if(rankList.get(p1.getUniqueID())==rankList.get(p2.getUniqueID())) return 2;
 				else return 1;
 			}
 		}
-		if(case_==6 || case_==7){
-			if(candidateMap.get(p1).pdStatus==True && candidateMap.get(p2).category==False){
+		else if(case_==6 || case_==7){
+			if(p1.getPDStatus()==true && p2.getPDStatus()==false){
 				return 0;
 			}
-			else if(candidateMap.get(p1).category==False && candidateMap.get(p2).category==True){
+			else if(p1.getPDStatus()==false && p2.getPDStatus()==true){
 				return 1;
 			}
 			else{
 
-				if(rankList.get(p1)<rankList.get(p2)) return 0;
-				else if(rankList.get(p1)==rankList.get(p2)) return 2;
+				if(rankList.get(p1.getUniqueID())<rankList.get(p2.getUniqueID())) return 0;
+				else if(rankList.get(p1.getUniqueID())==rankList.get(p2.getUniqueID())) return 2;
 				else return 1;
 			}	
 		}
+		else return -1;
 	}
 	/**Add the sort function here. Use comparator. For example for meritList[1]{OBC and non-PD}, first comparision:on category. 
 	oBC student should be higher up. Second comparision(which will be done when first compariosion gives equals(that is if both 

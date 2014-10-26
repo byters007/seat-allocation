@@ -7,10 +7,10 @@ public class VirtualProgramme
 	private Integer quota;
 	private Integer meritListIndex;
 	private Integer seatsFilled = new Integer(0);
-	private ArrayList<String> waitList;
-	private ArrayList<String> waitListForeign;
-	private ArrayList<String> waitListDS;
-	private ArrayList<String> tempList;
+	private ArrayList<Candidate> waitList;
+	private ArrayList<Candidate> waitListForeign;
+	private ArrayList<Candidate> waitListDS;
+	private ArrayList<Candidate> tempList;
 	private MeritList meritList;
 
 	public VirtualProgramme(String category_ , Boolean pdStatus_ , Integer quota_, MeritList[] recievedList)
@@ -66,26 +66,26 @@ public class VirtualProgramme
 	}
 
 	/** @debug: maybe you can pass tempId(string) ,instead of Candidate*/
-	public void receiveApplication(String candidateID, Map<String , Candidate> rejectionList)	
+	public void receiveApplication(Candidate newCandidate, Map<String , Candidate> rejectionList)	
 	{
-		if(meritList.getRank(candidateID)!=-1)				//check if the candidate is present in the merit list, which is available in gale-sharpley class.
+		if(meritList.getRank(newCandidate.getUniqueID())!=-1)				//check if the candidate is present in the merit list, which is available in gale-sharpley class.
 		{
-			tempList.add(candidateID);
+			tempList.add(newCandidate);
 		}
 		else
 		{
-			rejectionList.add(candidateID);	//otherwise add the candidate to the rejection list for that iteration of the gale sharpley algorithm.
+			rejectionList.put(newCandidate.getUniqueID(), newCandidate);	//otherwise add the candidate to the rejection list for that iteration of the gale sharpley algorithm.
 		}
 
 	}
-	//We can implement treeMap too
+	//We can implement treeMap took
 	public static void SelectionSort ( ArrayList<Candidate> num)
 	{
 	     int i, j, first, temp;  
-	     for ( i = num.length - 1; i > 0; i - - )  
+	     for ( i = num.size() - 1; i > 0; i--)  
 	     {
 	          first = 0;   //initialize to subscript of first element
-	          for(j = 1; j <= i; j ++)   //locate smallest element between positions 1 and i.
+	          for(j = 1; j <= i; j++)   //locate smallest element between positions 1 and i.
 	          {
 	               if( hashmap.get(num.get(j)).rank< hashmap.get(num.get(first)).rank )         	//here write the actual name of the hashmap, rank is the 
 	                 first = j;
@@ -95,7 +95,7 @@ public class VirtualProgramme
 	          num.set(i,temp); 
 	      }           
 	}
-	public Hashmap<String , Candidate> filter(Hashmap<String , Candidate> rejectionList)
+	public HashMap<String , Candidate> filter(HashMap<String , Candidate> rejectionList)
 	{
 			SelectionSort(tempList);		
 			if(quota>0)
@@ -106,7 +106,7 @@ public class VirtualProgramme
 																																candidate on top of the the remaining list, Add the candidate from the the tempList to the waitList.
 																																This is done so as to ensure that the candidates of same rank are all selected, even if it exceeds the quota*/
 				{
-					waitList.add(new Candidate(tempList.get(0));	/** Does tempList.get(0) returns value or reference?*/
+					waitList.add(new Candidate(tempList.get(0)));	/** Does tempList.get(0) returns value or reference?*/
 					tempList.remove(0);
 				}
 			}
