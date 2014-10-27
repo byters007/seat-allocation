@@ -279,7 +279,7 @@ public class GaleShapleyAdmission
 	/******************************************************Now to output the final Seat allocation*******************************************************************/
 		for (Map.Entry<String , Candidate> entry : candidateMap.entrySet())
 			{
-				System.out.println(entry.getKey() + " " + entry.getValue().getWaitListedFor().getProgramID()); /** @debug : Proper Syntax*/
+				System.out.println(entry.getKey() + " " + entry.getValue().getWaitListedFor().getProgramID() ); /** @debug : Proper Syntax*/
 			}
 	}
 
