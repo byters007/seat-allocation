@@ -13,6 +13,7 @@ public class Candidate{
 	//Information regarding preferences
 	private ArrayList<VirtualProgramme> preferenceList;
 	private int appliedUpto;
+	private boolean isWaitListed;
 	private VirtualProgramme waitListedFor; 
 	//Functions to manipulate data members
 	public String getUniqueID(){
@@ -61,6 +62,7 @@ public class Candidate{
 
 		preferenceList = new ArrayList<VirtualProgramme>();
 		appliedUpto = 0;
+		isWaitListed = false;
 	}
 
 	//Copy Constructor
@@ -76,10 +78,23 @@ public class Candidate{
 	}
 
 	//Function for adding preferences to the preference list
-	public void addPreference(ArrayList<VirtualProgramme> choice){
-		switch(category){
-
-			case "GE": if(!pdStatus){
+	public void addPreference(ArrayList<VirtualProgramme> choice) {
+		if(category.equals("GE")) { 
+			if(!pdStatus){
+				preferenceList.add(choice.get(0));
+				preferenceList.add(choice.get(1));
+				preferenceList.add(choice.get(4));
+				preferenceList.add(choice.get(5));
+			}
+			else {
+				preferenceList.add(choice.get(0));
+				preferenceList.add(choice.get(4));
+				preferenceList.add(choice.get(1));
+				preferenceList.add(choice.get(5));
+			}
+		}
+		else if(category.equals("OBC")) {
+			if(!pdStatus){
 				preferenceList.add(choice.get(0));
 				preferenceList.add(choice.get(1));
 				preferenceList.add(choice.get(4));
@@ -90,22 +105,10 @@ public class Candidate{
 				preferenceList.add(choice.get(4));
 				preferenceList.add(choice.get(1));
 				preferenceList.add(choice.get(5));
-			}break;
-
-			case "OBC": if(!pdStatus){
-				preferenceList.add(choice.get(0));
-				preferenceList.add(choice.get(1));
-				preferenceList.add(choice.get(4));
-				preferenceList.add(choice.get(5));
 			}
-			else{
-				preferenceList.add(choice.get(0));
-				preferenceList.add(choice.get(4));
-				preferenceList.add(choice.get(1));
-				preferenceList.add(choice.get(5));
-			}break;
-
-			case "SC": if(!pdStatus){
+		}
+		else if(category.equals("SC")) {
+			if(!pdStatus){
 				preferenceList.add(choice.get(0));
 				preferenceList.add(choice.get(2));
 				preferenceList.add(choice.get(1));
@@ -120,9 +123,10 @@ public class Candidate{
 				preferenceList.add(choice.get(6));
 				preferenceList.add(choice.get(1));
 				preferenceList.add(choice.get(5));
-			}break;
-
-			case "ST": if(!pdStatus){
+			}
+		}
+		else if(category.equals("ST")) {
+			if(!pdStatus){
 				preferenceList.add(choice.get(0));
 				preferenceList.add(choice.get(3));
 				preferenceList.add(choice.get(1));
@@ -137,12 +141,20 @@ public class Candidate{
 				preferenceList.add(choice.get(7));
 				preferenceList.add(choice.get(1));
 				preferenceList.add(choice.get(5));
-			}break;
+			}
 		}
 	}
 
 	public VirtualProgramme currentVirtualProgramme(){
 		return preferenceList.get(appliedUpto);
+	}
+
+	public boolean isWaitListedFor(){
+		return isWaitListed;
+	}
+
+	public void setWaitListedForBool(boolean p){
+		isWaitListed=p;
 	}
 	//Function for finding the next Virtual Programme
 	public void nextVirtualProgramme(){
@@ -153,5 +165,9 @@ public class Candidate{
 		if(appliedUpto==preferenceList.size()){
 			appliedUpto=-1;
 		}
+	}
+	void print_preference() {
+		for(int i = 0 ; i < preferenceList.size() ; i++)
+			System.out.println(preferenceList.get(i).getProgramID()) ;
 	}
 }

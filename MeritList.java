@@ -79,5 +79,10 @@ public class MeritList{
 		body: based on the value of "index" implement the corresponding sorting. 
 
 	*/
-
+	void print_list() {
+		for (Map.Entry<String , Integer> entry : rankList.entrySet())
+			{
+					System.out.println(entry.getKey() + " " + entry.getValue());
+			}
+	}
 }

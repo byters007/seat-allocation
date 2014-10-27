@@ -139,7 +139,6 @@ public class GaleShapleyAdmission
 				meritList[7].addCandidate(tempId , tempST_PD);
 			}
 		}
-
 		/*for(int i=0;i<8;i++)
 		{
 			meritList[i].sort(i);*/				/** @debug create function inside the MeritList class to sort it on the basis of the given code */
@@ -219,8 +218,7 @@ public class GaleShapleyAdmission
 			String[] choices = tempChoices.split("_");
 			for(int i=0;i<choices.length;i++){
 				//VirtualProgramme tempProg = new VirtualProgramme(tempChoice,pdStatus,/*@anmol: I need qouta over here. You have not read it in GaleShapley currently*/);
-				ArrayList<VirtualProgramme> tempProg = programMap.get(choices[i]); 
-				tempCandidate.addPreference(tempProg);
+				tempCandidate.addPreference(programMap.get(choices[i]));
 			}
 			//I think we should read the programme file before student choice file then we can directly get it from programme map
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -235,15 +233,24 @@ public class GaleShapleyAdmission
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/****************************************************Start of the GaleShapley Algorithm***************************************************************/
 		HashMap<String , Candidate> rejectionList = new HashMap<String , Candidate>();
-		boolean completed=true;
+		boolean completed=false;
 		while(completed == false)
 		{
 			//boolean completedForEveryCandidate = true;
 			//completed = true;
+			/*for (Map.Entry<String , Candidate> entry : candidateMap.entrySet())
+			{
+				System.out.println(entry.getKey());
+			}*/
 			for (Map.Entry<String , Candidate> entry : candidateMap.entrySet())
 			{
-				if(entry.getValue().getAppliedUpto()!=-1)
-				entry.getValue().currentVirtualProgramme().receiveApplication(entry.getValue() ,rejectionList);
+				//System.out.println(entry.getKey() + " " + entry.getValue().getAppliedUpto());
+				//entry.getValue().print_preference();
+				//System.out.println(entry.getKey() + " " + entry.getValue().currentVirtualProgramme().getProgramID());
+				if(entry.getValue().getAppliedUpto()!=-1 && !entry.getValue().isWaitListedFor()){
+					//System.out.println(entry.getKey() + " " + entry.getValue().currentVirtualProgramme().getProgramID());
+					entry.getValue().currentVirtualProgramme().receiveApplication(entry.getValue() ,rejectionList);
+				}
 				//entry.applyForProgram(rejectionList);									/** For each candidate, Call receiveApplication on the nextVirtualProgramme which forces candidate to apply to the next preference in his list.*/
 			/*	Also pass rejectionList as a Parameter so that if the candidate is rejected, he is added to the list directly. */
 			}

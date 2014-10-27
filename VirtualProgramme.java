@@ -110,17 +110,22 @@ public class VirtualProgramme
 			if(quota>0)
 			{
 				waitList.addAll(tempList.subList(0, quota));
+				for(int i=0; i<waitList.size(); i++){
+					waitList.get(i).setWaitListedForBool(true);
+				}
 				tempList.subList(0, quota).clear();
 				while( tempList.size()!=0  && (meritList.compareRank(waitList.get(waitList.size()-1), tempList.get(0), meritListIndex)==2)) /**While the candidate at the end of the waitList has same rank as the 
 																																candidate on top of the the remaining list, Add the candidate from the the tempList to the waitList.
 																																This is done so as to ensure that the candidates of same rank are all selected, even if it exceeds the quota*/
 				{
 					waitList.add(new Candidate(tempList.get(0)));	/** Does tempList.get(0) returns value or reference?*/
+					waitList.get(waitList.size()-1).setWaitListedForBool(true);
 					tempList.remove(0);
 				}
 			}
 
 			for(int i=0; i<tempList.size(); i++){
+				tempList.get(i).setWaitListedForBool(false);
 				rejectionList.put(tempList.get(i).getUniqueID(), tempList.get(i));
 			}
 			return rejectionList;
