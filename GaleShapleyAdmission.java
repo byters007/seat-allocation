@@ -4,6 +4,7 @@ import java.io.*;
 public class GaleShapleyAdmission
 {
 	private Map<String,Candidate> candidateMap = new HashMap<String,Candidate>();
+	private ArrayList<String> orderedCandidate = new ArrayList<String>();
 	private Map<String , ArrayList<VirtualProgramme> > programMap = new HashMap<String , ArrayList<VirtualProgramme> >();						//the program map contains the program code as the key and the arrayList of virtual program as its key value
 	//private ArrayList< ArrayList<VirtualProgramme> > Programs;
 	//private ArrayList<VirtualProgramme> virtualProgrammeList;
@@ -59,42 +60,6 @@ public class GaleShapleyAdmission
 	  		tempOBC_PD = sd.nextInt();
 	  		tempSC_PD = sd.nextInt();
 	  		tempST_PD = sd.nextInt();
-
-
-			//inRankList>>tempId>>tempGender>>tempCML>>tempGE>>tempOBC>>tempSC>>tempST>>tempCML_PD>>tempGE_PD>>tempOBC_PD>>tempSC_PD>>tempST_PD;
-																			/** @debug Make sure that proper copy constructors are present to enable copy by value */
-			/*if(candidateMap.get(tempId).getCategory.equals("GE") && candidateMap.get(tempId).getPDStatus.equals(false))
-			{
-				meritList[0].addCandidate(tempId , int rank);
-										/** @debug Make sure a proper constructor with these fewer arguements is present 
-				meritList[1].addCandidate(tempId , int rank);
-				meritList[4].addCandidate(tempId , int rank);
-				meritList[5].addCandidate(tempId , int rank);
-			}
-			if(candidateMap.get(tempId).getCategory.equals("OBC") && candidateMap.get(tempId).getPDStatus.equals(false))
-			{
-				meritList[1].addCandidate(tempId , int rank);
-			}
-			if(candidateMap.get(tempId).getCategory.equals("SC") && candidateMap.get(tempId).getPDStatus.equals(false))
-			{
-				meritList[2].addCandidate(tempId , int rank);
-			}
-			if(candidateMap.get(tempId).getCategory.equals("ST") && candidateMap.get(tempId).getPDStatus.equals(false))
-			{
-				meritList[3].addCandidate(tempId , int rank);
-			}
-			if(candidateMap.get(tempId).getCategory.equals("GE") && candidateMap.get(tempId).getPDStatus.equals(true))
-			{
-				meritList[0].addCandidate(tempId , int rank);
-										/** @debug Make sure a proper constructor with these fewer arguements is present 
-				meritList[1].addCandidate(tempId , int rank);
-				meritList[4].addCandidate(tempId , int rank);
-				meritList[5].addCandidate(tempId , int rank);
-			}																
-			*/
-			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//Use addCandidate function in meritlist
-			///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if(tempGE != 0)
 			{
 				meritList[0].addCandidate(tempId , tempGE);
@@ -148,7 +113,7 @@ public class GaleShapleyAdmission
 		} catch(FileNotFoundException e){
 			System.exit(1);
 		}
-			// Till this step we have created all 8 merit lists and sorted them in proper order.
+		//All merit lists checked
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		
@@ -212,6 +177,7 @@ public class GaleShapleyAdmission
 			if(tempPDStatus == "Y"){booleanTempPDStatus = true;}
 			else {booleanTempPDStatus = false;}
 			Candidate tempCandidate = new Candidate(tempId,tempCategory,booleanTempPDStatus,false,true);
+			orderedCandidate.add(tempId);
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//Added loop for adding preferencelist but not sure if it will work as i am using its member function inside its constructor
 			//@anmol: maybe we can do this in galeshapley
@@ -222,12 +188,14 @@ public class GaleShapleyAdmission
 			}
 			//I think we should read the programme file before student choice file then we can directly get it from programme map
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			tempCandidate.setWaitListedFor(tempCandidate.getChoice(0));
 			candidateMap.put(tempId, tempCandidate);
 		}
 		s.close();
 		} catch(FileNotFoundException e){
 			System.exit(1);
 		}
+		//Checked, everything OK till here
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -247,13 +215,15 @@ public class GaleShapleyAdmission
 				//System.out.println(entry.getKey() + " " + entry.getValue().getAppliedUpto());
 				//entry.getValue().print_preference();
 				//System.out.println(entry.getKey() + " " + entry.getValue().currentVirtualProgramme().getProgramID());
-				if(entry.getValue().getAppliedUpto()!=-1 && !entry.getValue().isWaitListedFor()){
-					//System.out.println(entry.getKey() + " " + entry.getValue().currentVirtualProgramme().getProgramID());
-					entry.getValue().currentVirtualProgramme().receiveApplication(entry.getValue() ,rejectionList);
+				if(entry.getValue().getAppliedUpto()!=-1){
+					//System.out.println(entry.getKey() + " " + entry.getValue().currentVirtualProgramme().getProgramID() + " " + entry.getValue().getAppliedUpto());
+					programMap.get(entry.getValue().currentVirtualProgramme().getProgramID()).get(entry.getValue().currentVirtualProgramme().getMeritListIndex()).receiveApplication(entry.getValue() ,rejectionList);
+					//System.out.println(entry.getKey() + " " + entry.getValue().currentVirtualProgramme().getProgramID() + " " + entry.getValue().getAppliedUpto());
 				}
 				//entry.applyForProgram(rejectionList);									/** For each candidate, Call receiveApplication on the nextVirtualProgramme which forces candidate to apply to the next preference in his list.*/
 			/*	Also pass rejectionList as a Parameter so that if the candidate is rejected, he is added to the list directly. */
 			}
+			//return;
 			/** Till Now , all the candidates have applied to the programs. now the programs will either keep their applicants in the wait list or reject them (and add to the rejection list).*/
 			
 			for (Map.Entry<String , ArrayList<VirtualProgramme> > entry : programMap.entrySet())
@@ -263,13 +233,16 @@ public class GaleShapleyAdmission
 	  			 
 	  			  it.next().filter(rejectionList);						/** Make sure that you add rejectionList parameter in the filter function for VirtualProgrammes */
 				}
-	//			entry.filter(rejectionList);		
+	//			entry.filter(rejectionList);
+		
 			}
 						/** @doubt Can java variables be redefined? as "entry" variable here */
 			for(Map.Entry<String , Candidate> entry : rejectionList.entrySet())
 			{
-					entry.getValue().nextVirtualProgramme();		/** For all the candidates in the rejection list, call "nextVirtualProgramme()" which crosses of their
+				//System.out.println(entry.getKey() + " " + entry.getValue().getAppliedUpto());
+					candidateMap.get(entry.getKey()).nextVirtualProgramme();		/** For all the candidates in the rejection list, call "nextVirtualProgramme()" which crosses of their
 															 present choice and makes them apply to the next choice in their list in the next iteration*/
+					//System.out.println(entry.getKey() + " " + entry.getValue().getAppliedUpto());
 			}
 			if(rejectionList.size()==0){completed = true;}		/** If no one is rejected in this iteration, rejectionList will be empty and the iteration can be terminated*/
 																/** Iterations are terminated when , for all candidates:
@@ -284,14 +257,15 @@ public class GaleShapleyAdmission
 		}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/******************************************************Now to output the final Seat allocation*******************************************************************/
-		for (Map.Entry<String , Candidate> entry : candidateMap.entrySet())
-			{
-				System.out.println(entry.getKey() + " " + entry.getValue().getWaitListedFor().getProgramID() ); /** @debug : Proper Syntax*/
+		for (int i=0;i<orderedCandidate.size();i++){
+			if(candidateMap.get(orderedCandidate.get(i)).getAppliedUpto()!=-1){
+				System.out.println(orderedCandidate.get(i) + " " + candidateMap.get(orderedCandidate.get(i)).getWaitListedFor().getProgramID() ); /** @debug : Proper Syntax*/
 			}
+			else{
+				System.out.println(orderedCandidate.get(i) + " Not Allocated");	
+			}
+		}
 	}
 
-	public static void main(String[] args) {
-		GaleShapleyAdmission start = new GaleShapleyAdmission();
-		start.startAlgorithm();
-	}
+	
 }

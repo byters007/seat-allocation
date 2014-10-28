@@ -17,12 +17,13 @@ public class MeritList{
 	}
 
 	//Function for adding candidate
-	public void addCandidate(String newID, Integer rank){
+	public void addCandidate(String newID, int rank){
 		rankList.put(newID,rank);
 	}
 
 	//Function for getting rank
 	public int getRank(String candidateID){
+		//if the candidate is not present in the merit list, return -1 else return the rank
 		if(rankList.containsKey(candidateID)==false){
 			return -1;
 		}
@@ -30,25 +31,32 @@ public class MeritList{
 	}
 
 	//Function for comparing ranks
-	public Integer compareRank(Candidate p1, Candidate p2, Integer case_){
+	//0 means p1's rank is better than p2's rank
+	//1 means p2's rank is better than p1's rank
+	//2 means both have same rank
+	public int compareRank(Candidate p1, Candidate p2, int case_){
 		if(case_==0 || case_==2 || case_==3){
-
-			if(rankList.get(p1.getUniqueID())<rankList.get(p2.getUniqueID())) return 0;
-			else if(rankList.get(p1.getUniqueID())==rankList.get(p2.getUniqueID())) return 2;
-			else return 1;
+			if(rankList.get(p1.getUniqueID())<rankList.get(p2.getUniqueID())) 
+				return 0;
+			else if(rankList.get(p1.getUniqueID())==rankList.get(p2.getUniqueID())) 
+				return 2;
+			else 
+				return 1;
 		}
 		else if(case_==1 || case_==4 || case_==5){
-			if(p1.getCategory()=="GE" && p2.getCategory()!="GE"){
+			if(p1.getCategory().equals("GE") && !p2.getCategory().equals("GE")){
 				return 1;
 			}
-			else if(p1.getCategory()!="GE" && p2.getCategory()=="GE"){
+			else if(!p1.getCategory().equals("GE") && p2.getCategory().equals("GE")){
 				return 0;
 			}
 			else{
-
-				if(rankList.get(p1.getUniqueID())<rankList.get(p2.getUniqueID())) return 0;
-				else if(rankList.get(p1.getUniqueID())==rankList.get(p2.getUniqueID())) return 2;
-				else return 1;
+				if(rankList.get(p1.getUniqueID())<rankList.get(p2.getUniqueID())) 
+					return 0;
+				else if(rankList.get(p1.getUniqueID())==rankList.get(p2.getUniqueID())) 
+					return 2;
+				else 
+					return 1;
 			}
 		}
 		else if(case_==6 || case_==7){
@@ -59,10 +67,12 @@ public class MeritList{
 				return 1;
 			}
 			else{
-
-				if(rankList.get(p1.getUniqueID())<rankList.get(p2.getUniqueID())) return 0;
-				else if(rankList.get(p1.getUniqueID())==rankList.get(p2.getUniqueID())) return 2;
-				else return 1;
+				if(rankList.get(p1.getUniqueID())<rankList.get(p2.getUniqueID())) 
+					return 0;
+				else if(rankList.get(p1.getUniqueID())==rankList.get(p2.getUniqueID())) 
+					return 2;
+				else 
+					return 1;
 			}	
 		}
 		else return -1;

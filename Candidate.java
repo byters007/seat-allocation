@@ -52,6 +52,10 @@ public class Candidate{
 		waitListedFor = x;
 	}
 
+	public VirtualProgramme getChoice(int i){
+		return preferenceList.get(i);
+	}
+
 	//Constructor
 	public Candidate(String uniqueID, String category, boolean pdStatus, boolean dsStatus, boolean nationality){
 		this.uniqueID=uniqueID;
@@ -59,7 +63,6 @@ public class Candidate{
 		this.pdStatus=pdStatus;
 		this.dsStatus=dsStatus;
 		this.nationality=nationality;
-
 		preferenceList = new ArrayList<VirtualProgramme>();
 		appliedUpto = 0;
 		isWaitListed = false;
@@ -72,9 +75,10 @@ public class Candidate{
 		pdStatus=x.pdStatus;
 		dsStatus=x.dsStatus;
 		nationality=x.nationality;
-		preferenceList=x.preferenceList;    //I am not sure whether u need preferencelist, appliedupto or waitlistedfor too and whether this will work
+		preferenceList = new ArrayList<VirtualProgramme>(x.preferenceList);    //I am not sure whether u need preferencelist, appliedupto or waitlistedfor too and whether this will work
 		appliedUpto=x.appliedUpto;
-		waitListedFor=x.waitListedFor;
+		//waitListedFor = new VirtualProgramme(x.waitListedFor);
+		isWaitListed=x.isWaitListed;
 	}
 
 	//Function for adding preferences to the preference list
@@ -160,14 +164,18 @@ public class Candidate{
 	public void nextVirtualProgramme(){
 		appliedUpto++;												/** @note to Pranjal: Maybe you should call the function "setWaitListedFor( preferenceList.get(appliedUpto))"
 													so that when this function is called from galeShapley class, the current waitListed Programme also gets updated automatically*/
-		setWaitListedFor(preferenceList.get(appliedUpto));		//@anmol: I think this should be in VirttualProgramme as when applying to the next programme we can get rejected so only the
-																	//programme knows we are waitlisted or rejected
+		if(appliedUpto < preferenceList.size() )
+		{
+			setWaitListedFor(preferenceList.get(appliedUpto));		//@anmol: I think this should be in VirtualProgramme as when applying to the next programme we can get rejected so only the
+		}															//programme knows we are waitlisted or rejected
+		//Reappear for JEE
 		if(appliedUpto==preferenceList.size()){
-			appliedUpto=-1;
+			//System.out.println("Yes");
+			appliedUpto=-1; //-1 means reappear next year
 		}
 	}
 	void print_preference() {
 		for(int i = 0 ; i < preferenceList.size() ; i++)
-			System.out.println(preferenceList.get(i).getProgramID()) ;
+			System.out.println(preferenceList.get(i).getProgramID() + " , " + preferenceList.get(i).getCategory()) ;
 	}
 }
