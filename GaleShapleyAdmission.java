@@ -231,7 +231,9 @@ public class GaleShapleyAdmission
 			}
 			//I think we should read the programme file before student choice file then we can directly get it from programme map
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			if(booleanTempNationality)
+			if(booleanTempDSStatus)
+				tempCandidate.setWaitListedFor(tempCandidate.getDSChoice(0));
+			else if(booleanTempNationality)
 				tempCandidate.setWaitListedFor(tempCandidate.getChoice(0));
 			else
 				tempCandidate.setWaitListedFor(tempCandidate.getFChoice(0));
@@ -262,7 +264,7 @@ public class GaleShapleyAdmission
 			for (Map.Entry<String , Candidate> entry : dsCandidateMap.entrySet())
 			{
 				if(candidateMap.get(entry.getKey()).getAppliedUpto()!=-1){
-					programMap.get(candidateMap.get(entry.getKey()).currentDSVirtualProgramme().getProgramID()).get(entry.getValue().currentDSVirtualProgramme().getMeritListIndex()).receiveApplication(entry.getValue() ,rejectionList);
+					//programMap.get(candidateMap.get(entry.getKey()).currentDSVirtualProgramme().getProgramID()).get(entry.getValue().currentDSVirtualProgramme().getMeritListIndex()).receiveApplication(entry.getValue() ,rejectionList);
 					instiAppliedMap.get(candidateMap.get(entry.getKey()).currentDSVirtualProgramme().getInstiID()).add(entry.getValue());
 				}
 			}
@@ -297,13 +299,12 @@ public class GaleShapleyAdmission
 			if(rejectionList.size()==0){dsCompleted = true;}
 			rejectionList.clear();
 		}
-		for(Map.Entry<String , Candidate> entry : fCandidateMap.entrySet()){
+		for(Map.Entry<String , Candidate> entry : dsCandidateMap.entrySet()){
 			if(candidateMap.get(entry.getKey()).getAppliedUpto()==-1){
 				candidateMap.get(entry.getKey()).setDSStatus(false);
 				candidateMap.get(entry.getKey()).setAppliedUpto(0);
 			}
 		}
-
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/****************************************************Start of the General Allocation***************************************************************/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -322,11 +323,11 @@ public class GaleShapleyAdmission
 				//System.out.println(entry.getKey() + " " + entry.getValue().getAppliedUpto());
 				//entry.getValue().print_preference();
 				//System.out.println(entry.getKey() + " " + entry.getValue().currentVirtualProgramme().getProgramID());
-				if(entry.getValue().getAppliedUpto()!=-1 && entry.getValue().getNationality() && !entry.getValue().getDSStatus()){
+				if(entry.getValue().getAppliedUpto()!=-1 && entry.getValue().getNationality() && !(entry.getValue().getDSStatus())){
 					//System.out.println(entry.getKey() + " " + entry.getValue().currentVirtualProgramme().getProgramID() + " " + entry.getValue().getAppliedUpto());
 					programMap.get(entry.getValue().currentVirtualProgramme().getProgramID()).get(entry.getValue().currentVirtualProgramme().getMeritListIndex()).receiveApplication(entry.getValue() ,rejectionList);
-					//System.out.println(entry.getKey() + " " + entry.getValue().currentVirtualProgramme().getProgramID() + " " + entry.getValue().getAppliedUpto());
 				}
+					//System.out.println(entry.getKey() + " " + entry.getValue().currentVirtualProgramme().getProgramID() + " " + entry.getValue().getAppliedUpto());
 				//entry.applyForProgram(rejectionList);									/** For each candidate, Call receiveApplication on the nextVirtualProgramme which forces candidate to apply to the next preference in his list.*/
 			/*	Also pass rejectionList as a Parameter so that if the candidate is rejected, he is added to the list directly. */
 			}
