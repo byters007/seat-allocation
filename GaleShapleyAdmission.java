@@ -4,11 +4,15 @@ import java.io.*;
 public class GaleShapleyAdmission
 {
 	private Map<String,Candidate> candidateMap = new HashMap<String,Candidate>();
+	private Map<String,Candidate> dsCandidateMap = new HashMap<String,Candidate>();
+	private Map<String,Candidate> fCandidateMap = new HashMap<String,Candidate>();
 	private ArrayList<String> orderedCandidate = new ArrayList<String>();
 	private Map<String , ArrayList<VirtualProgramme> > programMap = new HashMap<String , ArrayList<VirtualProgramme> >();						//the program map contains the program code as the key and the arrayList of virtual program as its key value
+	private Map<String , ArrayList<Candidate> > instiAppliedMap = new HashMap<String , ArrayList<Candidate> >();
 	//private ArrayList< ArrayList<VirtualProgramme> > Programs;
 	//private ArrayList<VirtualProgramme> virtualProgrammeList;
 	private MeritList[] meritList = new MeritList[8];
+	private MeritList[] categoryList = new MeritList[4];
 
 	//Candidate tempCandidate;
 	String tempId;
@@ -17,10 +21,15 @@ public class GaleShapleyAdmission
 	String tempChoices;
 	String garbage;
 	boolean booleanTempPDStatus;
+	boolean booleanTempDSStatus;
+	boolean booleanTempNationality;
 
 	public GaleShapleyAdmission(){
 		for(int i=0;i<8;i++){
 			meritList[i] = new MeritList();
+		}
+		for(int i=0;i<4;i++){
+			categoryList[i] = new MeritList();
 		}
 	}
 	
@@ -66,23 +75,27 @@ public class GaleShapleyAdmission
 				meritList[1].addCandidate(tempId , tempGE);
 				meritList[4].addCandidate(tempId , tempGE);
 				meritList[5].addCandidate(tempId , tempGE);
+				categoryList[3].addCandidate(tempId , tempGE);
 			}
 			
 			if(tempOBC != 0)
 			{
 				meritList[1].addCandidate(tempId , tempOBC);
+				categoryList[0].addCandidate(tempId , tempOBC);
 			}
 
 			if(tempSC != 0)
 			{
 				meritList[2].addCandidate(tempId , tempSC);
 				meritList[6].addCandidate(tempId , tempSC);
+				categoryList[1].addCandidate(tempId , tempSC);
 			}							
 
 			if(tempST != 0)
 			{
 				meritList[3].addCandidate(tempId , tempST);
 				meritList[7].addCandidate(tempId , tempST);
+				categoryList[2].addCandidate(tempId , tempST);
 			}				
 
 			if(tempGE_PD != 0)
@@ -93,15 +106,18 @@ public class GaleShapleyAdmission
 			if(tempOBC_PD != 0)
 			{
 				meritList[5].addCandidate(tempId , tempOBC_PD);
+				categoryList[0].addCandidate(tempId , tempOBC_PD);
 			}
 
 			if(tempSC_PD != 0)
 			{
 				meritList[6].addCandidate(tempId , tempSC_PD);
+				categoryList[1].addCandidate(tempId , tempSC_PD);
 			}
 			if(tempST_PD != 0)
 			{
 				meritList[7].addCandidate(tempId , tempST_PD);
+				categoryList[2].addCandidate(tempId , tempST_PD);
 			}
 		}
 		/*for(int i=0;i<8;i++)
@@ -120,6 +136,7 @@ public class GaleShapleyAdmission
 		/** To read in all available programs, create their respective virtual programmes*/
 		String programCode;
 		String programName;
+		String instiCode;
 		int ge,obc,sc,st,ge_pd,obc_pd,sc_pd,st_pd;
 		//ArrayList<VirtualProgramme> tempVirtualProgrammeList;
 		try{
@@ -133,6 +150,7 @@ public class GaleShapleyAdmission
 	  	//	inProgrammes>>garbage>>programCode>>programName>>ge>>obc>>sc>>st>>ge_pd>>obc_pd>>sc_pd>>st_pd;
 	  		garbage = sb.next();
 	  		programCode = sb.next();
+	  		instiCode = programCode.substring(0,1);
 	  		programName = sb.next();
 	  		ge = sb.nextInt();
 	  		obc = sb.nextInt();
@@ -142,15 +160,16 @@ public class GaleShapleyAdmission
 	  		obc_pd = sb.nextInt();
 	  		sc_pd = sb.nextInt();
 	  		st_pd = sb.nextInt();
+	  		instiAppliedMap.put(instiCode , new ArrayList<Candidate>());
 			programMap.put(programCode , new ArrayList<VirtualProgramme>());
-			programMap.get(programCode).add(new VirtualProgramme("GE",false,ge,meritList,programCode));
-			programMap.get(programCode).add(new VirtualProgramme("OBC",false,obc,meritList,programCode));
-			programMap.get(programCode).add(new VirtualProgramme("SC",false,sc,meritList,programCode));
-			programMap.get(programCode).add(new VirtualProgramme("ST",false,st,meritList,programCode));
-			programMap.get(programCode).add(new VirtualProgramme("GE_PD",true,ge_pd,meritList,programCode));
-			programMap.get(programCode).add(new VirtualProgramme("OBC_PD",true,obc_pd,meritList,programCode));
-			programMap.get(programCode).add(new VirtualProgramme("SC_PD",true,sc_pd,meritList,programCode));
-			programMap.get(programCode).add(new VirtualProgramme("ST_PD",true,st_pd,meritList,programCode));
+			programMap.get(programCode).add(new VirtualProgramme("GE",false,ge,meritList,programCode,instiCode));
+			programMap.get(programCode).add(new VirtualProgramme("OBC",false,obc,meritList,programCode,instiCode));
+			programMap.get(programCode).add(new VirtualProgramme("SC",false,sc,meritList,programCode,instiCode));
+			programMap.get(programCode).add(new VirtualProgramme("ST",false,st,meritList,programCode,instiCode));
+			programMap.get(programCode).add(new VirtualProgramme("GE_PD",true,ge_pd,meritList,programCode,instiCode));
+			programMap.get(programCode).add(new VirtualProgramme("OBC_PD",true,obc_pd,meritList,programCode,instiCode));
+			programMap.get(programCode).add(new VirtualProgramme("SC_PD",true,sc_pd,meritList,programCode,instiCode));
+			programMap.get(programCode).add(new VirtualProgramme("ST_PD",true,st_pd,meritList,programCode,instiCode));
 			//programMap.put(programCode);
 
 		}
@@ -174,9 +193,33 @@ public class GaleShapleyAdmission
 			tempCategory = s.next();
 			tempPDStatus = s.next();
 			tempChoices = s.next();
-			if(tempPDStatus == "Y"){booleanTempPDStatus = true;}
-			else {booleanTempPDStatus = false;}
-			Candidate tempCandidate = new Candidate(tempId,tempCategory,booleanTempPDStatus,false,true);
+			if(tempPDStatus.equals("Y"))
+				booleanTempPDStatus = true;
+			else 
+				booleanTempPDStatus = false;
+			
+			if(tempCategory.equals("DS")){
+				booleanTempDSStatus = true;
+				if(categoryList[3].getRank(tempId)==-1)
+					booleanTempDSStatus = false;
+				if(categoryList[0].getRank(tempId)!=-1)
+					tempCategory="OBC";
+				else if(categoryList[1].getRank(tempId)!=-1)
+					tempCategory="SC";
+				else if(categoryList[2].getRank(tempId)!=-1)
+					tempCategory="ST";
+				else
+					tempCategory="GE";
+			}
+			else 
+				booleanTempDSStatus = false;
+
+			if(tempCategory.equals("F"))
+				booleanTempNationality = false;
+			else 
+				booleanTempNationality = true;
+			
+			Candidate tempCandidate = new Candidate(tempId,tempCategory,booleanTempPDStatus,booleanTempDSStatus,booleanTempNationality);
 			orderedCandidate.add(tempId);
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//Added loop for adding preferencelist but not sure if it will work as i am using its member function inside its constructor
@@ -188,8 +231,15 @@ public class GaleShapleyAdmission
 			}
 			//I think we should read the programme file before student choice file then we can directly get it from programme map
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			tempCandidate.setWaitListedFor(tempCandidate.getChoice(0));
+			if(booleanTempNationality)
+				tempCandidate.setWaitListedFor(tempCandidate.getChoice(0));
+			else
+				tempCandidate.setWaitListedFor(tempCandidate.getFChoice(0));
 			candidateMap.put(tempId, tempCandidate);
+			if(booleanTempDSStatus)
+				dsCandidateMap.put(tempId, tempCandidate);
+			if(!booleanTempNationality)
+				fCandidateMap.put(tempId, tempCandidate);
 		}
 		s.close();
 		} catch(FileNotFoundException e){
@@ -200,7 +250,64 @@ public class GaleShapleyAdmission
 		
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/****************************************************Start of the GaleShapley Algorithm***************************************************************/
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 		HashMap<String , Candidate> rejectionList = new HashMap<String , Candidate>();
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/****************************************************Start of the DS Allocation***************************************************************/
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		boolean dsCompleted=false;
+		while(dsCompleted == false){
+			for (Map.Entry<String , Candidate> entry : dsCandidateMap.entrySet())
+			{
+				if(candidateMap.get(entry.getKey()).getAppliedUpto()!=-1){
+					programMap.get(candidateMap.get(entry.getKey()).currentDSVirtualProgramme().getProgramID()).get(entry.getValue().currentDSVirtualProgramme().getMeritListIndex()).receiveApplication(entry.getValue() ,rejectionList);
+					instiAppliedMap.get(candidateMap.get(entry.getKey()).currentDSVirtualProgramme().getInstiID()).add(entry.getValue());
+				}
+			}
+
+			for (Map.Entry<String , ArrayList<Candidate> > entry : instiAppliedMap.entrySet())
+			{
+				if(entry.getValue().size()>2){
+					int temp;
+					for(int i=0; i<2; i++){
+						temp=i;
+						for(int j=i; j<entry.getValue().size(); j++){
+							if(meritList[0].getRank(entry.getValue().get(j).getUniqueID()) < meritList[0].getRank(entry.getValue().get(temp).getUniqueID())){
+								temp=j;
+							}
+						}
+						entry.getValue().remove(temp);
+					}
+					for(int i=0; i<entry.getValue().size(); i++){
+						rejectionList.put(entry.getValue().get(i).getUniqueID(), entry.getValue().get(i));
+					}
+				}
+				entry.getValue().clear();
+			}
+
+			for(Map.Entry<String , Candidate> entry : rejectionList.entrySet())
+			{
+				//System.out.println(entry.getKey() + " " + entry.getValue().getAppliedUpto());
+					candidateMap.get(entry.getKey()).nextDSVirtualProgramme();		/** For all the candidates in the rejection list, call "nextVirtualProgramme()" which crosses of their
+															 present choice and makes them apply to the next choice in their list in the next iteration*/
+					//System.out.println(entry.getKey() + " " + entry.getValue().getAppliedUpto());
+			}
+			if(rejectionList.size()==0){dsCompleted = true;}
+			rejectionList.clear();
+		}
+		for(Map.Entry<String , Candidate> entry : fCandidateMap.entrySet()){
+			if(candidateMap.get(entry.getKey()).getAppliedUpto()==-1){
+				candidateMap.get(entry.getKey()).setDSStatus(false);
+				candidateMap.get(entry.getKey()).setAppliedUpto(0);
+			}
+		}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/****************************************************Start of the General Allocation***************************************************************/
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		boolean completed=false;
 		while(completed == false)
 		{
@@ -215,7 +322,7 @@ public class GaleShapleyAdmission
 				//System.out.println(entry.getKey() + " " + entry.getValue().getAppliedUpto());
 				//entry.getValue().print_preference();
 				//System.out.println(entry.getKey() + " " + entry.getValue().currentVirtualProgramme().getProgramID());
-				if(entry.getValue().getAppliedUpto()!=-1){
+				if(entry.getValue().getAppliedUpto()!=-1 && entry.getValue().getNationality() && !entry.getValue().getDSStatus()){
 					//System.out.println(entry.getKey() + " " + entry.getValue().currentVirtualProgramme().getProgramID() + " " + entry.getValue().getAppliedUpto());
 					programMap.get(entry.getValue().currentVirtualProgramme().getProgramID()).get(entry.getValue().currentVirtualProgramme().getMeritListIndex()).receiveApplication(entry.getValue() ,rejectionList);
 					//System.out.println(entry.getKey() + " " + entry.getValue().currentVirtualProgramme().getProgramID() + " " + entry.getValue().getAppliedUpto());
@@ -255,17 +362,46 @@ public class GaleShapleyAdmission
 			rejectionList.clear();
 							/**Clear the rejectionList before the next Iteration*/
 		}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/****************************************************Start of the Foreign Allocation***************************************************************/
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		boolean fCompleted=false;
+		while(fCompleted == false){
+			for (Map.Entry<String , Candidate> entry : fCandidateMap.entrySet())
+			{
+				if(candidateMap.get(entry.getKey()).getAppliedUpto()!=-1){
+					programMap.get(candidateMap.get(entry.getKey()).currentFVirtualProgramme().getProgramID()).get(entry.getValue().currentFVirtualProgramme().getMeritListIndex()).receiveApplication(entry.getValue() ,rejectionList);
+				}
+			}
+			for (Map.Entry<String , ArrayList<VirtualProgramme> > entry : programMap.entrySet())
+			{
+				entry.getValue().get(0).fFilter(rejectionList);
+				entry.getValue().get(1).fFilter(rejectionList);
+				entry.getValue().get(4).fFilter(rejectionList);
+				entry.getValue().get(5).fFilter(rejectionList);
+			}
+			for(Map.Entry<String , Candidate> entry : rejectionList.entrySet())
+			{
+				//System.out.println(entry.getKey() + " " + entry.getValue().getAppliedUpto());
+					candidateMap.get(entry.getKey()).nextFVirtualProgramme();		/** For all the candidates in the rejection list, call "nextVirtualProgramme()" which crosses of their
+															 present choice and makes them apply to the next choice in their list in the next iteration*/
+					//System.out.println(entry.getKey() + " " + entry.getValue().getAppliedUpto());
+			}
+			if(rejectionList.size()==0){fCompleted = true;}
+			rejectionList.clear();
+		}
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/******************************************************Now to output the final Seat allocation*******************************************************************/
 		for (int i=0;i<orderedCandidate.size();i++){
 			if(candidateMap.get(orderedCandidate.get(i)).getAppliedUpto()!=-1){
-				System.out.println(orderedCandidate.get(i) + " " + candidateMap.get(orderedCandidate.get(i)).getWaitListedFor().getProgramID() ); /** @debug : Proper Syntax*/
+				System.out.println(orderedCandidate.get(i) + "," + candidateMap.get(orderedCandidate.get(i)).getWaitListedFor().getProgramID() + "," + candidateMap.get(orderedCandidate.get(i)).getWaitListedFor().getCategory() ); /** @debug : Proper Syntax*/
 			}
 			else{
-				System.out.println(orderedCandidate.get(i) + " Not Allocated");	
+				System.out.println(orderedCandidate.get(i) + ",-1");
 			}
 		}
 	}
-
-	
 }

@@ -4,6 +4,7 @@ import java.io.*;
 public class VirtualProgramme  
 {
 	private String programID;
+	private String instiID;
 	private String category;	
 	private Boolean pdStatus;
 	private int quota;
@@ -17,6 +18,7 @@ public class VirtualProgramme
 
 	public VirtualProgramme(VirtualProgramme prog) {
 		programID = prog.programID ;
+		instiID = prog.instiID;
 		category = prog.category ;
 		pdStatus = prog.pdStatus ;
 		quota = prog.quota ;
@@ -28,11 +30,12 @@ public class VirtualProgramme
 		tempList = new ArrayList<Candidate>(prog.tempList) ;
 		meritList = new MeritList(prog.meritList) ;
 	}
-	public VirtualProgramme(String category_ , Boolean pdStatus_ , int quota_, MeritList[] recievedList, String programID_)
+	public VirtualProgramme(String category_ , Boolean pdStatus_ , int quota_, MeritList[] recievedList, String programID_, String instiID_)
 	{
 		category = category_;
 		pdStatus = pdStatus_;
 		programID = programID_;
+		instiID = instiID_;
 		if(pdStatus == false)
 		{
 			if(category == "GE")
@@ -88,6 +91,9 @@ public class VirtualProgramme
 	public String getProgramID(){
 		return programID;
 	}
+	public String getInstiID(){
+		return instiID;
+	}
 	public String getCategory() {
 		return category ;
 	}
@@ -127,38 +133,9 @@ public class VirtualProgramme
 	          num.set(i,temp); 
 	      }
 	}
+
 	public HashMap<String , Candidate> filter(HashMap<String , Candidate> rejectionList)
 	{
-		/*
-			//those who have applied for that programme, sort them in the increasing order of rank
-			SelectionSort(tempList);	
-			if(quota>0)
-			{
-				waitList.clear();
-				waitList.addAll(tempList.subList(0, Math.min(quota , tempList.size()  ) ) ) ;
-				/*for(int i=0; i<waitList.size(); i++){
-					waitList.get(i).setWaitListedForBool(true);
-				}*/
-				/*	
-				tempList.subList(0,  Math.min(quota , tempList.size() )).clear();
-				while( tempList.size()!=0  && (meritList.compareRank(waitList.get(waitList.size()-1), tempList.get(0), meritListIndex)==2)) /**While the candidate at the end of the waitList has same rank as the 
-																																candidate on top of the the remaining list, Add the candidate from the the tempList to the waitList.
-				*/
-				/*																												This is done so as to ensure that the candidates of same rank are all selected, even if it exceeds the quota*/
-//				{	// Does tempList.get(0) returns value or reference?
-//					waitList.add(tempList.get(0)));
-//					//waitList.get(waitList.size()-1).setWaitListedForBool(true);
-//					tempList.remove(0);
-//				}
-//			}
-//			for(int i=0; i<tempList.size(); i++){
-//				//tempList.get(i).setWaitListedForBool(false);
-//				rejectionList.put(tempList.get(i).getUniqueID(), tempList.get(i));
-//			}
-//			tempList.clear();
-//			return rejectionList;*/
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		//System.out.println(tempList.size()) ;
 		SelectionSort(tempList) ;
 		if(quota > 0) {
 			waitList.clear() ;
@@ -186,7 +163,38 @@ public class VirtualProgramme
 		tempList.clear();
 		return rejectionList;
 	}
-	void print_program() {
+
+	public HashMap<String , Candidate> fFilter(HashMap<String , Candidate> rejectionList)
+	{
+		SelectionSort(tempList) ;
+		if(quota>0){
+			int i ;
+			for(i = 0 ; i < tempList.size() ; i++) {
+				if(waitList.size()<quota){
+					waitList.add(tempList.get(i)) ;
+				}
+				else if(meritList.compareRank(waitList.get(waitList.size()-1), tempList.get(i), meritListIndex)==2) {
+					waitList.add(tempList.get(i)) ;
+				}
+				else {
+					break ;
+				}
+			}
+			for( ; i < tempList.size() ; i++) {
+				rejectionList.put(tempList.get(i).getUniqueID(), tempList.get(i));
+			}
+		}
+		else {
+			for(int i=0; i<tempList.size(); i++){
+				rejectionList.put(tempList.get(i).getUniqueID(), tempList.get(i));
+			}
+		}
+
+		tempList.clear();
+		return rejectionList;
+	}
+
+	public void print_program() {
 		System.out.println(programID + " " + quota + " " + category) ;
 	}
 }
