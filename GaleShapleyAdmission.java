@@ -9,7 +9,6 @@ public class GaleShapleyAdmission
 	private ArrayList<String> orderedCandidate = new ArrayList<String>();
 	private Map<String , ArrayList<VirtualProgramme> > programMap = new HashMap<String , ArrayList<VirtualProgramme> >();						//the program map contains the program code as the key and the arrayList of virtual program as its key value
 	private Map<String , ArrayList<Candidate> > instiAppliedMap = new HashMap<String , ArrayList<Candidate> >();
-	//private ArrayList< ArrayList<VirtualProgramme> > Programs;
 	//private ArrayList<VirtualProgramme> virtualProgrammeList;
 	private MeritList[] meritList = new MeritList[8];
 	private MeritList[] categoryList = new MeritList[4];
@@ -33,12 +32,25 @@ public class GaleShapleyAdmission
 		}
 	}
 	
-	public Candidate getCandidate(String uniqueID){
-		return candidateMap.get(uniqueID);
+	public Candidate getCandidate(Candidate candidate){
+		return candidateMap.get(candidate.getUniqueID());
 	}
 
-	public ArrayList<VirtualProgramme> getProgram(String programCode){
-		return programMap.get(programCode);
+	public ArrayList<VirtualProgramme> getProgram(VirtualProgramme program){
+		return programMap.get(program.getProgramID());
+	}
+
+	public void sortList(ArrayList<Candidate> rankList){
+		Collections.sort(rankList, new Comparator<Candidate>() {
+	        @Override
+	        public int compare(Candidate candidate1, Candidate candidate2)
+	        {
+	        	if(meritList[0].getRank(candidate1.getUniqueID()) < meritList[0].getRank(candidate2.getUniqueID()))
+	        		return -1;
+	        	else
+	        		return 1;
+	        }
+    	});
 	}
 
 	public void startAlgorithm()
@@ -218,7 +230,7 @@ public class GaleShapleyAdmission
 				booleanTempNationality = false;
 			else 
 				booleanTempNationality = true;
-			
+
 			Candidate tempCandidate = new Candidate(tempId,tempCategory,booleanTempPDStatus,booleanTempDSStatus,booleanTempNationality);
 			orderedCandidate.add(tempId);
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -238,8 +250,9 @@ public class GaleShapleyAdmission
 			else
 				tempCandidate.setWaitListedFor(tempCandidate.getFChoice(0));
 			candidateMap.put(tempId, tempCandidate);
-			if(booleanTempDSStatus)
+			if(booleanTempDSStatus){
 				dsCandidateMap.put(tempId, tempCandidate);
+			}
 			if(!booleanTempNationality)
 				fCandidateMap.put(tempId, tempCandidate);
 		}
@@ -271,20 +284,16 @@ public class GaleShapleyAdmission
 
 			for (Map.Entry<String , ArrayList<Candidate> > entry : instiAppliedMap.entrySet())
 			{
-				if(entry.getValue().size()>2){
-					int temp;
-					for(int i=0; i<2; i++){
-						temp=i;
-						for(int j=i; j<entry.getValue().size(); j++){
-							if(meritList[0].getRank(entry.getValue().get(j).getUniqueID()) < meritList[0].getRank(entry.getValue().get(temp).getUniqueID())){
-								temp=j;
-							}
-						}
-						entry.getValue().remove(temp);
-					}
-					for(int i=0; i<entry.getValue().size(); i++){
-						rejectionList.put(entry.getValue().get(i).getUniqueID(), entry.getValue().get(i));
-					}
+				sortList(entry.getValue());
+				int seatsGiven=2;
+				for(int i=2;i<entry.getValue().size();i++){
+					if(meritList[0].getRank(entry.getValue().get(i).getUniqueID())==meritList[0].getRank(entry.getValue().get(i-1).getUniqueID()))
+						seatsGiven++;
+					else
+						break;
+				}
+				for(int i=seatsGiven; i<entry.getValue().size(); i++){
+					rejectionList.put(entry.getValue().get(i).getUniqueID(), entry.getValue().get(i));
 				}
 				entry.getValue().clear();
 			}
